@@ -1,4 +1,3 @@
-import React from 'react'
 import Styles from './ProfileSettings.module.css'
 
 import { useState } from 'react'
@@ -7,14 +6,12 @@ import {
 	changeProfileInfo,
 	selectProfile,
 } from '../../../redux/slices/profileSlice'
+import InputLabel from '../../Label/InputLabel'
+import TextareaLabel from '../../Label/TextareaLabel'
 
 function ProfileSettings() {
 	const dispatch = useDispatch()
 	const user = useSelector(selectProfile)
-
-	const textAreaMaxLength = 150
-
-	const [areaCounter, setAreaCounter] = useState(0)
 
 	const [userData, setUserData] = useState({
 		name: user.name,
@@ -26,38 +23,13 @@ function ProfileSettings() {
 		avatarUrl: user.avatarUrl,
 	})
 
-	// const handleImageUpload = async (e, action) => {
-	// 	const file = e.target.files[0]
-	// 	if (file && file.type.startsWith('image/')) {
-	// 		const formData = new FormData()
-	// 		formData.append('file', file)
-
-	// 		try {
-	// 			const response = await fetch('/api/upload', {
-	// 				method: 'POST',
-	// 				body: formData,
-	// 			})
-	// 			if (response.ok) {
-	// 				const data = await response.json()
-	// 				dispatch(action(data.fileUrl))
-	// 			} else {
-	// 				alert('Something Went Wrong')
-	// 			}
-	// 		} catch (err) {
-	// 			console.error('Error: ' + err)
-	// 		}
-	// 	} else {
-	// 		alert('Please, choose the image')
-	// 	}
-	// }
-
 	const handleSubmitForm = e => {
 		e.preventDefault()
 		dispatch(changeProfileInfo(userData))
 	}
 
 	return (
-		<div className={Styles['settings-wrapper']}>
+		<>
 			<h2>ProfileSettings</h2>
 			<form
 				onSubmit={handleSubmitForm}
@@ -67,43 +39,37 @@ function ProfileSettings() {
 			>
 				<div className={Styles.settings}>
 					<div className={Styles['form-label']}>
-						<label htmlFor='name'> Name:{` `}</label>
-
-						<input
-							className={Styles.input}
-							type='text'
+						<InputLabel
+							title='Name'
 							id='name'
+							type='text'
 							value={userData.name}
-							required={true}
 							onChange={e => {
 								setUserData({ ...userData, name: e.target.value })
 							}}
+							maxLength={20}
 						/>
 					</div>
 
 					<div className={Styles['form-label']}>
-						<label htmlFor='nickname'> Nickname: </label>
-						<input
-							className={Styles.input}
-							type='text'
+						<InputLabel
+							title='Nickname'
 							id='nickname'
-							required={true}
+							type='text'
 							value={userData.nickname}
 							onChange={e => {
 								setUserData({ ...userData, nickname: e.target.value })
 							}}
+							maxLength={20}
 						/>
 					</div>
 
 					<div className={Styles['form-label']}>
-						<label htmlFor='birth'>Birth: </label>
-						<input
-							className={Styles.input}
-							type='date'
+						<InputLabel
+							title='Birth'
 							id='birth'
+							type='date'
 							value={userData.birth}
-							required={true}
-							max={150}
 							onChange={e => {
 								setUserData({ ...userData, birth: e.target.value })
 							}}
@@ -111,76 +77,32 @@ function ProfileSettings() {
 					</div>
 
 					<div className={Styles['form-label']}>
-						<label htmlFor='email'> Email:{` `}</label>
-
-						<input
-							className={Styles.input}
-							type='email'
+						<InputLabel
+							title='Email'
 							id='email'
+							type='email'
 							value={userData.email}
-							required={true}
 							onChange={e => {
 								setUserData({ ...userData, email: e.target.value })
 							}}
 						/>
 					</div>
 
-					<div className={Styles['form-label']}>
-						<label
-							htmlFor='avatar'
-							className={`${Styles['label-img']} ${
-								userData.avatarUrl ? Styles['image-load'] : null
-							}`}
-						>
-							Avatar:{' '}
-						</label>
-						<input
-							type='file'
-							id='avatar'
-							className={Styles.input}
-							size={5120}
-							// onChange={e => handleImageUpload(e, setAvatarUrl, setProfileAvatar)}
-						/>
-					</div>
-					<div className={Styles['form-label']}>
-						<label
-							htmlFor='banner'
-							className={`${Styles['label-img']} ${Styles['image-load']}`}
-						>
-							Banner:{' '}
-						</label>
-						<input
-							type='file'
-							id='banner'
-							title='none'
-							className={Styles.input}
-							size={5120}
-							// onChange={loadBackgroundImage}
-						/>
-					</div>
 					<div className={`${Styles['form-label']} ${Styles.description}`}>
-						<label htmlFor='description'>Description: </label>
-						<span>
-							{areaCounter}/{textAreaMaxLength}
-						</span>
-						<textarea
-							className={Styles.textarea}
-							value={userData.description}
+						<TextareaLabel
+							title='Description'
 							id='description'
-							maxLength={textAreaMaxLength}
-							onChange={e => {
-								setAreaCounter(e.target.value.length)
-								setUserData({ ...userData, description: e.target.value })
+							setUserData={newDescription => {
+								setUserData({ ...userData, description: newDescription })
 							}}
 						/>
 					</div>
 				</div>
 				<button type='submit' className={Styles['button-submit']}>
-					CLICK
+					Save
 				</button>
 			</form>
-			{/* {avatarUrl && <img src={avatarUrl} />} */}
-		</div>
+		</>
 	)
 }
 

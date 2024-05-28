@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
 	name: '',
 	birth: '',
-	nickname: `User №${Math.floor(Math.random() * 1000)}`,
+	nickname: `User ${Math.floor(Math.random() * 5000)}`,
 	email: '',
 	description: '',
 	bannerUrl: null,

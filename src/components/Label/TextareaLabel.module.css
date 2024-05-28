@@ -1,0 +1,23 @@
+.textarea {
+	resize: none;
+	font-weight: 500;
+	font-size: 0.8vw;
+	color: #fff;
+	background-color: rgb(28, 28, 30);
+	box-shadow: 0 0 0.4vw rgba(0, 0, 0, 0.5), 0 0 0 0.15vw transparent;
+	border-radius: 0.4vw;
+	border: none;
+	outline: none;
+	padding: 0.4vw;
+	transition: 0.4s;
+	height: 100px;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.textarea:hover {
+	box-shadow: 0 0 0 0.15vw rgba(255, 255, 255, 0.186);
+}
+.textarea:focus {
+	box-shadow: 0 0 0 0.15vw rgb(202, 202, 202);
+}
