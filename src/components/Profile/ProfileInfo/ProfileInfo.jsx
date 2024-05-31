@@ -5,14 +5,15 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../../redux/slices/profileSlice'
 import Button from '../../Button/Button'
-import Styles from './ProfileInfo.module.css'
 import Modal from '../../Modal/Modal'
 import ProfileSettings from '../ProfileSettings/ProfileSettings'
+import Styles from './ProfileInfo.module.css'
 
 function ProfileInfo() {
 	const [settingsActive, setSettingsActive] = useState(false)
 
 	const profile = useSelector(selectProfile)
+
 	return (
 		<div className={Styles['main-wrapper']}>
 			<div className={Styles['header-wrapper']}>

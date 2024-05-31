@@ -12,7 +12,9 @@ function Modal({ active, setActive, children }) {
 				className={`${Styles['modal__content']} ${
 					active ? Styles['active'] : ''
 				}`}
-				onClick={e => e.stopPropagation()}
+				onClick={e => {
+					e.stopPropagation()
+				}}
 			>
 				{children}
 			</div>

@@ -6,6 +6,7 @@ import {
 	changeProfileInfo,
 	selectProfile,
 } from '../../../redux/slices/profileSlice'
+import Button from '../../Button/Button'
 import InputLabel from '../../Label/InputLabel'
 import TextareaLabel from '../../Label/TextareaLabel'
 
@@ -98,9 +99,7 @@ function ProfileSettings() {
 						/>
 					</div>
 				</div>
-				<button type='submit' className={Styles['button-submit']}>
-					Save
-				</button>
+				<Button type='submit' text='Save' />
 			</form>
 		</>
 	)

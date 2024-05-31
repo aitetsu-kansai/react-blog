@@ -21,16 +21,25 @@
 
 .modal__content {
 	background-color: var(--background-secondary-color);
-	min-width: 40%;
+	min-width: 35%;
 	color: white;
 
-	text-align: center;
+	text-align: end;
 	border-radius: 22px;
 	padding: 5px;
-	transform: scale(0.7);
-	transition: 0.4s;
+	transform: scale(0.6);
+	transition: 0.2s;
+}
+
+.modal__content h2 {
+	text-align: center;
 }
 
 .modal__content.active {
 	transform: scale(1);
+}
+
+.modal__entr {
+	min-width: 40%;
+	padding: 5px;
 }
