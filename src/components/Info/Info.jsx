@@ -1,14 +1,20 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { selectProfile } from '../../redux/slices/profileSlice'
+import { clearInfo, selectInfo } from '../../redux/slices/infoSlice'
 
 function Info() {
-	const profile = useSelector(selectProfile)
+	const dispatch = useDispatch()
+	const info = useSelector(selectInfo)
+
 	useEffect(() => {
-		toast.info('Updated!')
-	}, [profile])
+		if (info.infoMessage) {
+			toast[info.infoCategory](info.infoMessage)
+			dispatch(clearInfo())
+		}
+	}, [info, dispatch])
+
 	return <ToastContainer position='top-right' autoClose={2000} theme='dark' />
 }
 

@@ -2,10 +2,12 @@ import Styles from './ProfileSettings.module.css'
 
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { setInfo } from '../../../redux/slices/infoSlice'
 import {
 	changeProfileInfo,
 	selectProfile,
 } from '../../../redux/slices/profileSlice'
+import { deepEqual } from '../../../utils/deepEqual'
 import Button from '../../Button/Button'
 import InputLabel from '../../Label/InputLabel'
 import TextareaLabel from '../../Label/TextareaLabel'
@@ -26,7 +28,20 @@ function ProfileSettings() {
 
 	const handleSubmitForm = e => {
 		e.preventDefault()
+		if (deepEqual(user, userData)) {
+			dispatch(
+				setInfo({
+					infoCategory: 'info',
+					infoMessage: `The user's previous settings are equal to the current ones`,
+				})
+			)
+			return
+		}
+
 		dispatch(changeProfileInfo(userData))
+		dispatch(
+			setInfo({ infoCategory: 'success', infoMessage: 'Profile info updated' })
+		)
 	}
 
 	return (
@@ -99,6 +114,7 @@ function ProfileSettings() {
 						/>
 					</div>
 				</div>
+
 				<Button type='submit' text='Save' />
 			</form>
 		</>

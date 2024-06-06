@@ -2,16 +2,19 @@ import { LuInfo } from 'react-icons/lu'
 import { PiTextAlignLeftFill } from 'react-icons/pi'
 
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setInfo } from '../../../redux/slices/infoSlice'
 import { selectProfile } from '../../../redux/slices/profileSlice'
 import Button from '../../Button/Button'
 import Modal from '../../Modal/Modal'
+import ProfileAdditionalInfo from '../ProfileAdditionalInfo/ProfileAdditionalInfo'
 import ProfileSettings from '../ProfileSettings/ProfileSettings'
 import Styles from './ProfileInfo.module.css'
 
 function ProfileInfo() {
 	const [settingsActive, setSettingsActive] = useState(false)
-
+	const [userInfoActive, setUserInfoActive] = useState(false)
+	const dispatch = useDispatch()
 	const profile = useSelector(selectProfile)
 
 	return (
@@ -33,10 +36,27 @@ function ProfileInfo() {
 					</p>
 				) : null}
 				<div className={Styles['more-info-container']}>
-					<a className={Styles['more-info']}>
+					<a
+						className={Styles['more-info']}
+						onClick={() => {
+							if (profile.name && profile.nickname && profile.birth) {
+								setUserInfoActive(true)
+							} else {
+								dispatch(
+									setInfo({
+										infoCategory: 'warning',
+										infoMessage: 'You must fill the information about you',
+									})
+								)
+							}
+						}}
+					>
 						<LuInfo />
 						More info
 					</a>
+					<Modal active={userInfoActive} setActive={setUserInfoActive}>
+						<ProfileAdditionalInfo />
+					</Modal>
 					<Button
 						text='Profile editor'
 						onClick={() => {
