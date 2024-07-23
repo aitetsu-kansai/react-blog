@@ -22,8 +22,6 @@ function ProfileSettings() {
 		nickname: user.nickname,
 		email: user.email,
 		description: user.description,
-		bannerUrl: user.bannerUrl,
-		avatarUrl: user.avatarUrl,
 	})
 
 	const handleSubmitForm = e => {
@@ -64,6 +62,7 @@ function ProfileSettings() {
 								setUserData({ ...userData, name: e.target.value })
 							}}
 							maxLength={20}
+							required={true}
 						/>
 					</div>
 
@@ -77,6 +76,7 @@ function ProfileSettings() {
 								setUserData({ ...userData, nickname: e.target.value })
 							}}
 							maxLength={20}
+							required={true}
 						/>
 					</div>
 

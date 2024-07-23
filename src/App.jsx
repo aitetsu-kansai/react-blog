@@ -1,12 +1,14 @@
 import './App.css'
 import Info from './components/Info/Info'
-import Profile from './components/Profile/Profile'
+import Posts from './components/Posts/Posts'
+import ProfileInfo from './components/Profile/ProfileInfo/ProfileInfo'
 
 function App() {
 	return (
 		<div className='main'>
-			<Profile />
+			<ProfileInfo />
 			<Info />
+			<Posts />
 		</div>
 	)
 }

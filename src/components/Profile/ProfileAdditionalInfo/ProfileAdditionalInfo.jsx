@@ -1,19 +1,58 @@
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../../redux/slices/profileSlice'
-import Styles from './ProfileAdditionalInfo.module.css'
 import { calculateAge } from '../../../utils/calculateAge'
+import Styles from './ProfileAdditionalInfo.module.css'
 
 function ProfileAdditionalInfo() {
 	const profile = useSelector(selectProfile)
 	return (
-		<div className={Styles['profile-additional-info']}>
-			<p>Name: {profile.name}</p>
-			<p>Nickname: {profile.nickname}</p>
-			<p>Age: {calculateAge(profile.birth)}</p>
-			<p>Birth: {profile.birth}</p>
-			<p>Email: {profile.email}</p>
-			<p>Posts quantity: {}</p>
-		</div>
+		<>
+			<h2
+				className={Styles['additional-info__header']}
+			>{`${profile.name}'s info`}</h2>
+			<div className={Styles['profile-info-wrapper']}>
+				<div className={Styles['profile-avatar-wrapper']}>
+					<div className={Styles['profile-avatar']}>
+						<img src={profile.avatarUrl} alt='background' />
+						<h3>{profile.nickname}</h3>
+					</div>
+				</div>
+				<div className={Styles['profile-additional-info']}>
+					<p>
+						<span className={Styles['profile-data-name']}>Name: </span>
+						{profile.name}
+					</p>
+					<p>
+						<span className={Styles['profile-data-name']}>Nickname: </span>
+						{profile.nickname}
+					</p>
+					{profile.birth && (
+						<p>
+							<span className={Styles['profile-data-name']}>Age: </span>
+							{calculateAge(profile.birth)}
+						</p>
+					)}
+					{profile.birth && (
+						<p>
+							<span className={Styles['profile-data-name']}>Birth: </span>
+							{profile.birth}
+						</p>
+					)}
+					{profile.email && (
+						<p>
+							<span className={Styles['profile-data-name']}>Email: </span>
+							{profile.email}
+						</p>
+					)}
+					<p>
+						<span className={Styles['profile-data-name']}>
+							Posts quantity:{' '}
+						</span>
+						{0}
+					</p>
+				</div>
+			</div>
+		</>
 	)
 }
 

@@ -1,0 +1,56 @@
+.postbar-ico {
+	font-size: 25px;
+	color: white;
+	transition: 0.3s all ease-out;
+}
+
+.postbar-title {
+	transition: all 0.3s ease-out;
+	position: relative;
+	color: var(--secondary-text-color);
+}
+
+.postbar-title:hover {
+	cursor: pointer;
+}
+
+.postbar-title::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -1.5px;
+	height: 1.5px;
+	background-color: var(--primary-text-color);
+	width: 0;
+	transition: width 0.3s ease-out;
+}
+
+.postbar-title.active {
+	color: var(--primary-text-color);
+}
+
+.postbar-title.active::after {
+	width: 100%;
+}
+
+.postbar-container {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.postbar-title__container,
+.postbar-icons__container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px;
+	padding: 10px;
+	color: var(--primary-text-color);
+}
+
+.postbar-ico:hover {
+	cursor: pointer;
+	color: var(--secondary-text-color);
+}

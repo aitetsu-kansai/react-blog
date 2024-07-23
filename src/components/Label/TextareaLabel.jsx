@@ -1,28 +1,29 @@
 import { useState } from 'react'
-import Styles from "./TextareaLabel.module.css"
+import Styles from './TextareaLabel.module.css'
 
-function TextareaLabel({ title, id, setUserData, value }) {
-	const textAreaMaxLength = 150
-
+function TextareaLabel({ title, id, setData, value, maxLength = 150 }) {
 	const [areaCounter, setAreaCounter] = useState(0)
 
 	return (
-		<>
-			<label htmlFor={id}>{title}: </label>
-			<span>
-				{areaCounter}/{textAreaMaxLength}
-			</span>
+		<div className={Styles['textarea-container']}>
+			<label htmlFor={id}>
+				{title}:{' '}
+				<span>
+					{areaCounter}/{maxLength}
+				</span>
+			</label>
+
 			<textarea
 				className={Styles.textarea}
 				value={value}
 				id={id}
-				maxLength={textAreaMaxLength}
+				maxLength={maxLength}
 				onChange={e => {
 					setAreaCounter(e.target.value.length)
-					setUserData(e.target.value)
+					setData(e.target.value)
 				}}
 			/>
-		</>
+		</div>
 	)
 }
 

@@ -1,9 +1,9 @@
 .profile-additional-info {
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(1, 1fr);
 	text-align: center;
+	text-align: start;
 	gap: 15px;
-	padding: 50px;
 }
 
 .profile-additional-info p {
@@ -12,4 +12,49 @@
 	border-radius: 12px;
 	margin: 10px;
 	padding-block: 10px;
+	font-size: 1em;
+}
+
+.profile-data-name {
+	font-size: 0.7em;
+	color: var(--secondary-text-color);
+	padding-inline: 7px;
+}
+
+.profile-avatar {
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+}
+
+.profile-avatar-wrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-items: center;
+	border-right: 1px var(--secondary-text-color) solid;
+	z-index: 2;
+}
+
+.profile-avatar img {
+	width: inherit;
+	height: inherit;
+	border-radius: inherit;
+	object-fit: cover;
+}
+
+.profile-info-wrapper {
+	text-align: center;
+	align-items: center;
+	border-top: 1px solid var(--secondary-text-color);
+	padding: 30px;
+	display: grid;
+	gap: 20px;
+	grid-template-columns: 1fr 1.2fr;
+}
+
+.profile-avatar h3 {
+	margin: 15px;
 }

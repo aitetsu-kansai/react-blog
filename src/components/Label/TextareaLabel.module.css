@@ -1,3 +1,9 @@
+.textarea-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
 .textarea {
 	resize: none;
 	font-weight: 500;

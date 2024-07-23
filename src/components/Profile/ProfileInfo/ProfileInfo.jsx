@@ -1,10 +1,17 @@
 import { LuInfo } from 'react-icons/lu'
 import { PiTextAlignLeftFill } from 'react-icons/pi'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { MdPhotoCamera } from 'react-icons/md'
+import { TbPhoto } from 'react-icons/tb'
 import { useDispatch, useSelector } from 'react-redux'
 import { setInfo } from '../../../redux/slices/infoSlice'
-import { selectProfile } from '../../../redux/slices/profileSlice'
+import {
+	selectProfile,
+	setProfileAvatar,
+	setProfileBanner,
+} from '../../../redux/slices/profileSlice'
+import { uploadImage } from '../../../utils/uploadImage'
 import Button from '../../Button/Button'
 import Modal from '../../Modal/Modal'
 import ProfileAdditionalInfo from '../ProfileAdditionalInfo/ProfileAdditionalInfo'
@@ -16,15 +23,56 @@ function ProfileInfo() {
 	const [userInfoActive, setUserInfoActive] = useState(false)
 	const dispatch = useDispatch()
 	const profile = useSelector(selectProfile)
+	const bannerRef = useRef(null)
+	const avatarRef = useRef(null)
 
 	return (
 		<div className={Styles['main-wrapper']}>
 			<div className={Styles['header-wrapper']}>
-				<div className={Styles.background}>
-					<img src='../../../../public/background.jpg' alt='background' />
+				<div className={Styles['background-wrapper']}>
+					<div className={Styles.background}>
+						<img src={profile.bannerUrl} alt='background' id='profile-pic' />
+
+						<div className={Styles['change-background-overlay']}>
+							<label htmlFor='input-background'>
+								<TbPhoto
+									className={Styles['change-background-ico']}
+									title='Change background'
+								/>
+							</label>
+							<input
+								type='file'
+								accept='image/jpeg, image/png, image/jpg'
+								id='input-background'
+								onChange={() => {
+									uploadImage(bannerRef, setProfileBanner, dispatch)
+								}}
+								ref={bannerRef}
+							/>
+						</div>
+					</div>
 				</div>
-				<div className={Styles.avatar}>
-					<img src='../../../../public/avatar.png' alt='logo' />
+				<div className={Styles['avatar-wrapper']}>
+					<div className={Styles.avatar}>
+						<img src={profile.avatarUrl} alt='logo' />
+						<div className={Styles['change-avatar-overlay']}>
+							<label htmlFor='input-avatar'>
+								<MdPhotoCamera
+									className={Styles['change-avatar-ico']}
+									title='Change avatar'
+								/>
+							</label>
+							<input
+								type='file'
+								accept='image/jpeg, image/png, image/jpg'
+								id='input-avatar'
+								onChange={() => {
+									uploadImage(avatarRef, setProfileAvatar, dispatch)
+								}}
+								ref={avatarRef}
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div className={Styles['data-wrapper']}>
@@ -39,7 +87,7 @@ function ProfileInfo() {
 					<a
 						className={Styles['more-info']}
 						onClick={() => {
-							if (profile.name && profile.nickname && profile.birth) {
+							if (profile.name && profile.nickname) {
 								setUserInfoActive(true)
 							} else {
 								dispatch(

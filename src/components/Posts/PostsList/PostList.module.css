@@ -1,0 +1,17 @@
+.posts-list__container {
+	margin: 15px;
+	display: flex;
+	color: white;
+	width: 60%;
+	border-radius: 22px;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+.posts-list__wrapper {
+	display: flex;
+	justify-content: center;
+	width: 70%;
+}

@@ -1,8 +1,16 @@
 import Styles from './InputLabel.module.css'
 
-function InputLabel({ title, id, type, onChange, value, maxLength }) {
+function InputLabel({
+	title,
+	id,
+	type,
+	onChange,
+	value,
+	maxLength,
+	required = false,
+}) {
 	return (
-		<>
+		<div className={Styles['input-container']}>
 			<label htmlFor={id}>
 				{' '}
 				{title}:{` `}
@@ -12,11 +20,11 @@ function InputLabel({ title, id, type, onChange, value, maxLength }) {
 				type={type}
 				id={id}
 				value={value}
-				required={true}
+				required={required}
 				onChange={onChange}
 				maxLength={maxLength && null}
 			/>
-		</>
+		</div>
 	)
 }
 export default InputLabel

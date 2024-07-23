@@ -6,8 +6,8 @@ const initialState = {
 	nickname: `User ${Math.floor(Math.random() * 5000)}`,
 	email: '',
 	description: '',
-	bannerUrl: null,
-	avatarUrl: null,
+	bannerUrl: '../../../public/default-profile-banner.png',
+	avatarUrl: '../../../public/default-profile-avatar.png',
 }
 
 const profileSlice = createSlice({
@@ -21,10 +21,10 @@ const profileSlice = createSlice({
 			}
 		},
 		setProfileAvatar: (state, action) => {
-			return { ...state, avatar: action.payload }
+			return { ...state, avatarUrl: action.payload }
 		},
 		setProfileBanner: (state, action) => {
-			return { ...state, banner: action.payload }
+			return { ...state, bannerUrl: action.payload }
 		},
 	},
 })

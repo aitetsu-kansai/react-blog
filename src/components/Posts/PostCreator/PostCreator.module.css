@@ -1,0 +1,42 @@
+.post-creator__container {
+	text-align: center;
+	/* min-width: 60em; */
+	display: flex;
+	flex-direction: column;
+}
+
+.post-creator__container h3 {
+	padding: 20px;
+	margin: 0;
+	border-bottom: 1px solid var(--secondary-text-color);
+}
+
+.post-creator__form {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	padding: 25px;
+	align-items: center;
+}
+
+.post-creator__form > div:nth-child(1) {
+	border: 1px var(--secondary-text-color) solid;
+}
+
+.post-creator__container {
+	display: flex;
+	gap: 25px;
+}
+
+.post-creator__container .card-tag {
+	text-align: left;
+	align-self: flex-start;
+	padding-left: 10px;
+	padding-top: 25px;
+	padding-bottom: 10px;
+}
+
+.post-creator__container .card-title {
+	width: 100%;
+	text-align: center;
+}
