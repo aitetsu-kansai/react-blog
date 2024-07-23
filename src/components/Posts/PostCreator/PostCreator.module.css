@@ -1,6 +1,5 @@
 .post-creator__container {
 	text-align: center;
-	/* min-width: 60em; */
 	display: flex;
 	flex-direction: column;
 }
@@ -26,6 +25,8 @@
 .post-creator__container {
 	display: flex;
 	gap: 25px;
+	justify-content: center;
+	align-items: center;
 }
 
 .post-creator__container .card-tag {
@@ -36,7 +37,22 @@
 	padding-bottom: 10px;
 }
 
+.post-creator__container .card-description {
+	text-align: left;
+	align-self: flex-start;
+	padding-left: 10px;
+	padding-top: 25px;
+	padding-bottom: 10px;
+	width: 100%;
+}
+
 .post-creator__container .card-title {
 	width: 100%;
 	text-align: center;
+}
+
+.post-creator__container .post__image {
+	width: 75%;
+	height: 80%;
+	border-radius: 22px;
 }

@@ -11,7 +11,7 @@
 .post-container {
 	display: flex;
 	flex-direction: column;
-	max-width: 90%;
+	width: 90%;
 	align-items: center;
 }
 
@@ -52,16 +52,16 @@
 	width: 100%;
 }
 
-.post-data img {
-	border-radius: 22px;
-	width: 100%;
-}
 .post-data h6 {
 	text-align: left;
 	padding-left: 10px;
 	padding-top: 35px;
 	padding-bottom: 20px;
 	margin: 0;
+}
+
+.post-data p {
+	text-align: left;
 }
 
 .favourite-ico {
@@ -81,8 +81,4 @@
 .favourite-ico:hover {
 	color: rgb(202, 202, 202);
 	cursor: pointer;
-}
-
-.post-data img.portrait {
-	padding: 20px;
 }

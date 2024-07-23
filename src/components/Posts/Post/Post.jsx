@@ -1,18 +1,17 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PostCard from '../PostCard/PostCard'
-import Styles from "./Post.module.css"
+import './Post.css'
 
 function Post({ img, title, description }) {
 	const imageRef = useRef(null)
+	const [isPortrait, setIsPortrait] = useState(null)
 
 	useEffect(() => {
 		const img = imageRef.current
 		if (img) {
 			img.onload = () => {
 				if (img.naturalHeight > img.naturalWidth) {
-					console.log(img)
-					// Проверка портретной ориентации
-					img.classList.add(Styles['portrait']) // Добавление класса
+					setIsPortrait(true)
 				}
 			}
 		}
@@ -20,7 +19,15 @@ function Post({ img, title, description }) {
 	return (
 		<PostCard>
 			<h6>TAGS</h6>
-			<img src={img} alt='' ref={imageRef} />
+			<div className={`post-image__container ${isPortrait ? 'portrait' : ''}`}>
+				{isPortrait && (
+					<div
+						className='post-image__background'
+						style={{ backgroundImage: `url(${img})` }}
+					></div>
+				)}
+				<img src={img} alt='' ref={imageRef} />
+			</div>
 			<h4>{title}</h4>
 			<p>{description}</p>
 		</PostCard>

@@ -108,7 +108,7 @@ function ProfileSettings() {
 						<TextareaLabel
 							title='Description'
 							id='description'
-							setUserData={newDescription => {
+							setData={newDescription => {
 								setUserData({ ...userData, description: newDescription })
 							}}
 						/>

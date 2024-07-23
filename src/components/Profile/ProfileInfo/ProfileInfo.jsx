@@ -93,7 +93,7 @@ function ProfileInfo() {
 								dispatch(
 									setInfo({
 										infoCategory: 'warning',
-										infoMessage: 'You must fill the information about you',
+										infoMessage: 'You must fill the full information about you',
 									})
 								)
 							}

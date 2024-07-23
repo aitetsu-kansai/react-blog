@@ -1,12 +1,20 @@
 import { useState } from 'react'
 import { FaCircleArrowUp } from 'react-icons/fa6'
 import { GrPowerReset } from 'react-icons/gr'
+import { useDispatch, useSelector } from 'react-redux'
+import { setInfo } from '../../../redux/slices/infoSlice'
+import { selectProfile } from '../../../redux/slices/profileSlice'
 import Modal from '../../Modal/Modal'
 import PostCreator from '../PostCreator/PostCreator'
 import Styles from './PostBar.module.css'
 
 function PostBar() {
+	const profile = useSelector(selectProfile)
+
+	const dispatch = useDispatch()
+
 	const [showAll, setShowAll] = useState(true)
+
 	const [showOnlyFavourite, setShowOnlyFavourite] = useState(false)
 
 	const [creatorActive, setCreatorActive] = useState(false)
@@ -49,7 +57,16 @@ function PostBar() {
 				<FaCircleArrowUp
 					className={Styles['postbar-ico']}
 					title='Add new post'
-					onClick={() => setCreatorActive(true)}
+					onClick={() => {
+						profile.name && profile.email
+							? setCreatorActive(true)
+							: dispatch(
+									setInfo({
+										infoCategory: 'warning',
+										infoMessage: 'You must fill the full information about you',
+									})
+							  )
+					}}
 				/>
 
 				<Modal active={creatorActive} setActive={setCreatorActive}>
