@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { setInfo } from '../../../redux/slices/infoSlice.js'
 import { addPost } from '../../../redux/slices/postsSlice.js'
 import { uploadImage } from '../../../utils/uploadImage.js'
 import InputLabel from '../../Label/InputLabel.jsx'
@@ -7,7 +8,7 @@ import TextareaLabel from '../../Label/TextareaLabel.jsx'
 import PostCard from '../PostCard/PostCard.jsx'
 import Styles from './PostCreator.module.css'
 
-function PostCreator() {
+function PostCreator({ setActive }) {
 	const imageRef = useRef(null)
 
 	const [title, setTitle] = useState('')
@@ -15,15 +16,30 @@ function PostCreator() {
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState(null)
 	const dispatch = useDispatch()
+
+	const handleFormSubmit = e => {
+		e.preventDefault()
+		dispatch(addPost({ title, tags, description, image }))
+		dispatch(
+			setInfo({
+				infoCategory: 'success',
+				infoMessage: 'The post was successfully created',
+			})
+		)
+		setActive(false)
+		setTitle('')
+		setTags([])
+		setDescription('')
+		setImage('')
+		console.log(image)
+	}
+
 	return (
 		<div className={Styles['post-creator__container']}>
 			<h3>Create a new post</h3>
 			<form
 				className={Styles['post-creator__form']}
-				onSubmit={e => {
-					e.preventDefault()
-					dispatch(addPost({ title, tags, description, image }))
-				}}
+				onSubmit={handleFormSubmit}
 			>
 				<PostCard>
 					<div className={Styles['post-creator__container']}>
@@ -44,7 +60,9 @@ function PostCreator() {
 								onChange={() => {
 									uploadImage(imageRef, setImage)
 								}}
+								multiple
 								ref={imageRef}
+								className={Styles['img__input']}
 							/>
 						</div>
 						<img src={image} alt='' className={Styles['post__image']} />

@@ -3,7 +3,6 @@ export const uploadImage = (ref, setImage, dispatch) => {
 	if (file) {
 		const imageUrl = URL.createObjectURL(file)
 		dispatch && dispatch(setImage(imageUrl))
-		console.log(!!(dispatch && dispatch(setImage(imageUrl))))
 		setImage(imageUrl)
 	}
 }

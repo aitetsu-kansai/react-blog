@@ -70,7 +70,7 @@ function PostBar() {
 				/>
 
 				<Modal active={creatorActive} setActive={setCreatorActive}>
-					<PostCreator />
+					<PostCreator setActive={setCreatorActive} />
 				</Modal>
 			</div>
 		</div>

@@ -1,10 +1,12 @@
 import { useSelector } from 'react-redux'
+import { selectPosts } from '../../../redux/slices/postsSlice'
 import { selectProfile } from '../../../redux/slices/profileSlice'
 import { calculateAge } from '../../../utils/calculateAge'
 import Styles from './ProfileAdditionalInfo.module.css'
 
 function ProfileAdditionalInfo() {
 	const profile = useSelector(selectProfile)
+	const posts = useSelector(selectPosts)
 	return (
 		<>
 			<h2
@@ -48,7 +50,7 @@ function ProfileAdditionalInfo() {
 						<span className={Styles['profile-data-name']}>
 							Posts quantity:{' '}
 						</span>
-						{0}
+						{posts.length}
 					</p>
 				</div>
 			</div>
