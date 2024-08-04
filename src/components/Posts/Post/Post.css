@@ -1,3 +1,9 @@
+.post-image__wrapper {
+	display: flex;
+	gap: 15px;
+	flex-direction: column;
+}
+
 .post-image__container {
 	position: relative;
 	display: flex;
@@ -25,12 +31,19 @@
 	max-width: 100%;
 	/* max-height: 50%; */
 	position: relative;
+	vertical-align: middle;
 	z-index: 1;
 }
 
 .portrait img {
-	width: 72%;
+	width: 75%;
+	min-height: inherit;
 	height: auto;
-	object-fit: cover;
 	border-radius: 0;
+}
+
+.post-image__main-image img {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
 }

@@ -45,7 +45,7 @@ function ProfileInfo() {
 								accept='image/jpeg, image/png, image/jpg'
 								id='input-background'
 								onChange={() => {
-									uploadImage(bannerRef, setProfileBanner, dispatch)
+									uploadImage(bannerRef, ...[,], setProfileBanner, dispatch)
 								}}
 								ref={bannerRef}
 							/>
@@ -67,7 +67,7 @@ function ProfileInfo() {
 								accept='image/jpeg, image/png, image/jpg'
 								id='input-avatar'
 								onChange={() => {
-									uploadImage(avatarRef, setProfileAvatar, dispatch)
+									uploadImage(avatarRef, ...[,], setProfileAvatar, dispatch)
 								}}
 								ref={avatarRef}
 							/>

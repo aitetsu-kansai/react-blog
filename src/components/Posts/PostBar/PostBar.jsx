@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { FaCircleArrowUp } from 'react-icons/fa6'
 import { GrPowerReset } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
-import { setInfo } from '../../../redux/slices/infoSlice'
 import { selectProfile } from '../../../redux/slices/profileSlice'
 import Modal from '../../Modal/Modal'
 import PostCreator from '../PostCreator/PostCreator'
@@ -58,14 +57,15 @@ function PostBar() {
 					className={Styles['postbar-ico']}
 					title='Add new post'
 					onClick={() => {
-						profile.name && profile.email
-							? setCreatorActive(true)
-							: dispatch(
-									setInfo({
-										infoCategory: 'warning',
-										infoMessage: 'You must fill the full information about you',
-									})
-							  )
+						setCreatorActive(true)
+						// profile.name && profile.email
+						// 	? setCreatorActive(true)
+						// 	: dispatch(
+						// 			setInfo({
+						// 				infoCategory: 'warning',
+						// 				infoMessage: 'You must fill the full information about you',
+						// 			})
+						// 	  )
 					}}
 				/>
 

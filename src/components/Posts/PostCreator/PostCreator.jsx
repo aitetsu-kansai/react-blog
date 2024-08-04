@@ -14,7 +14,7 @@ function PostCreator({ setActive }) {
 	const [title, setTitle] = useState('')
 	const [tags, setTags] = useState([])
 	const [description, setDescription] = useState('')
-	const [image, setImage] = useState(null)
+	const [image, setImage] = useState([])
 	const dispatch = useDispatch()
 
 	const handleFormSubmit = e => {
@@ -30,8 +30,7 @@ function PostCreator({ setActive }) {
 		setTitle('')
 		setTags([])
 		setDescription('')
-		setImage('')
-		console.log(image)
+		setImage([])
 	}
 
 	return (
@@ -58,14 +57,16 @@ function PostCreator({ setActive }) {
 								type='file'
 								id={'image'}
 								onChange={() => {
-									uploadImage(imageRef, setImage)
+									uploadImage(imageRef, image, setImage, ...[,], true)
 								}}
 								multiple
 								ref={imageRef}
 								className={Styles['img__input']}
 							/>
 						</div>
-						<img src={image} alt='' className={Styles['post__image']} />
+						{Array.from(image).map((el, id) => (
+							<img src={el.img} className={Styles['post__image']} key={id} />
+						))}
 						<div className={Styles['card-title']}>
 							<InputLabel
 								title={'Post Title'}
