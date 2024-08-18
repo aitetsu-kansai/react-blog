@@ -2,7 +2,7 @@
 	background-color: rgba(0, 0, 0, 0.5);
 	width: 100%;
 	z-index: 2;
-	height: 100vh;
+	height: 100%;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -26,17 +26,15 @@
 	color: white;
 	text-align: end;
 	border-radius: 22px;
-	padding: 5px;
 	transform: scale(0.6);
 	transition: 0.2s;
-	overflow-y:scroll;
-	max-height: 85%;
+	overflow-y: scroll;
+	max-height: 90%;
 }
 
 .modal__content::-webkit-scrollbar {
 	display: none;
 }
-
 
 .modal__content h2 {
 	text-align: center;

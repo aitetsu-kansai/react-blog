@@ -1,9 +1,9 @@
-import { CiBookmark, CiBookmarkCheck } from 'react-icons/ci'
-import './PostCard.css'
-import { getDate } from '../../../utils/getDate'
 import { useState } from 'react'
+import { CiBookmark, CiBookmarkCheck } from 'react-icons/ci'
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../../redux/slices/profileSlice'
+import { getDate } from '../../../utils/getDate'
+import './PostCard.css'
 
 function PostCard({ children }) {
 	const profile = useSelector(selectProfile)

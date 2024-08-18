@@ -1,21 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import Modal from '../../Modal/Modal'
 import PostCard from '../PostCard/PostCard'
 import './Post.css'
 
 function Post({ img, title, description }) {
 	const imageRefs = useRef(null)
-	const [isPortrait, setIsPortrait] = useState(null)
-
-	useEffect(() => {
-		const images = imageRefs.current
-		if (images) {
-			images.onload = () => {
-				if (images.naturalHeight > images.naturalWidth) {
-					setIsPortrait(true)
-				}
-			}
-		}
-	}, [])
+	const [fullImgActive, setFullImgActive] = useState(false)
+	const [activeImg, setActiveImg] = useState({ imageUrl: '', orientation: '' })
 
 	return (
 		<PostCard>
@@ -24,7 +15,7 @@ function Post({ img, title, description }) {
 				{img.map((el, id) => (
 					<div
 						className={`post-image__container ${
-							el.orientation === 'book' ? 'portrait' : ''
+							el.orientation === 'book' ? 'book' : 'portrait'
 						}`}
 						key={id}
 					>
@@ -36,12 +27,31 @@ function Post({ img, title, description }) {
 							></div>
 						)}
 						<div className='post-image__main-image'>
-							<img src={el.img} ref={imageRefs} />
+							<img
+								src={el.img}
+								ref={imageRefs}
+								onClick={() => {
+									setFullImgActive(true)
+									setActiveImg({
+										imageUrl: el.img,
+										orientation: el.orientation,
+									})
+								}}
+							/>
 						</div>
 					</div>
 				))}
 			</div>
-
+			<Modal active={fullImgActive} setActive={setFullImgActive} isImage={true}>
+				<div
+					className='modal__image-container'
+					/* the class is relative to the orientation of the>>> className={`modal__image-container ${
+						activeImg.orientation === 'book' ? 'book' : 'portrait'
+					}`} */
+				>
+					<img src={activeImg.imageUrl} />
+				</div>
+			</Modal>
 			<h4>{title}</h4>
 			<p>{description}</p>
 		</PostCard>

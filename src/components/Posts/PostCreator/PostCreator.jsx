@@ -33,6 +33,10 @@ function PostCreator({ setActive }) {
 		setImage([])
 	}
 
+	const handleImageDelete = id => {
+		setImage(images => images.filter((_, i) => i !== id))
+	}
+
 	return (
 		<div className={Styles['post-creator__container']}>
 			<h3>Create a new post</h3>
@@ -58,6 +62,9 @@ function PostCreator({ setActive }) {
 								id={'image'}
 								onChange={() => {
 									uploadImage(imageRef, image, setImage, ...[,], true)
+									// if (imageRef.current) {
+									// 	imageRef.current.value = ''
+									// }
 								}}
 								multiple
 								ref={imageRef}
@@ -65,7 +72,12 @@ function PostCreator({ setActive }) {
 							/>
 						</div>
 						{Array.from(image).map((el, id) => (
-							<img src={el.img} className={Styles['post__image']} key={id} />
+							<img
+								src={el.img}
+								className={Styles['post__image']}
+								key={id}
+								onDoubleClick={() => handleImageDelete(id)}
+							/>
 						))}
 						<div className={Styles['card-title']}>
 							<InputLabel

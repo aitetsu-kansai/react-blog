@@ -1,17 +1,15 @@
-import Styles from './Modal.module.css'
+import './Modal.css'
 
-function Modal({ active, setActive, children }) {
+function Modal({ active, setActive, children, isImage = false }) {
 	return (
 		<div
-			className={`${Styles['modal']} ${active ? Styles['active'] : ''}`}
+			className={`modal ${active ? 'active' : ''}`}
 			onClick={() => {
 				setActive(false)
 			}}
 		>
 			<div
-				className={`${Styles['modal__content']} ${
-					active ? Styles['active'] : ''
-				}`}
+				className={`modal__content ${active ? 'active' : ''}`}
 				onClick={e => {
 					e.stopPropagation()
 				}}
