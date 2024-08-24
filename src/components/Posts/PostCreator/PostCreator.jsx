@@ -1,9 +1,12 @@
 import { useRef, useState } from 'react'
+
+import { IoClose } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { setInfo } from '../../../redux/slices/infoSlice.js'
 import { addPost } from '../../../redux/slices/postsSlice.js'
 import { uploadImage } from '../../../utils/uploadImage.js'
 import InputLabel from '../../Label/InputLabel.jsx'
+
 import TextareaLabel from '../../Label/TextareaLabel.jsx'
 import PostCard from '../PostCard/PostCard.jsx'
 import Styles from './PostCreator.module.css'
@@ -71,14 +74,22 @@ function PostCreator({ setActive }) {
 								className={Styles['img__input']}
 							/>
 						</div>
-						{Array.from(image).map((el, id) => (
-							<img
-								src={el.img}
-								className={Styles['post__image']}
-								key={id}
-								onDoubleClick={() => handleImageDelete(id)}
-							/>
-						))}
+						<div className={Styles['post__images-container']}>
+							{Array.from(image).map((el, id) => (
+								<div className={Styles['post__image-container']}>
+									<IoClose
+										className={Styles['clear-img__button-ico']}
+										onClick={() => handleImageDelete(id)}
+									/>
+
+									<img
+										src={el.img}
+										className={Styles['post__image']}
+										key={id}
+									/>
+								</div>
+							))}
+						</div>
 						<div className={Styles['card-title']}>
 							<InputLabel
 								title={'Post Title'}
