@@ -21,6 +21,7 @@
 	justify-content: start;
 	width: 100%;
 	gap: 15px;
+	padding-bottom: 30px;
 }
 
 .post-author-date__container {
@@ -48,15 +49,13 @@
 }
 
 .post-data {
-	/* padding-top: 25px; */
 	width: 100%;
 }
 
 .post-data h6 {
 	text-align: left;
 	padding-left: 10px;
-	padding-top: 35px;
-	padding-bottom: 20px;
+	padding-bottom: 30px;
 	margin: 0;
 }
 
