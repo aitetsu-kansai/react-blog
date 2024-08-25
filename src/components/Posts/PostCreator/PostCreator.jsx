@@ -24,18 +24,24 @@ function PostCreator({ setActive }) {
 
 	const handleFormSubmit = e => {
 		e.preventDefault()
-		dispatch(addPost({ title, tags, description, image }))
-		dispatch(
-			setInfo({
-				infoCategory: 'success',
-				infoMessage: 'The post was successfully created',
-			})
-		)
-		setActive(false)
-		setTitle('')
-		setTags([])
-		setDescription('')
-		setImage([])
+		if ((title && description) || image) {
+			dispatch(addPost({ title, tags, description, image }))
+			dispatch(
+				setInfo({
+					infoCategory: 'success',
+					infoMessage: 'The post was successfully created',
+				})
+			)
+			setActive(false)
+			setTitle('')
+			setTags([])
+			setDescription('')
+			setImage([])
+		} else {
+			dispatch(
+				setInfo({ infoCategory: 'error', infoMessage: `Fill the post's info` })
+			)
+		}
 	}
 
 	const handleImageDelete = id => {

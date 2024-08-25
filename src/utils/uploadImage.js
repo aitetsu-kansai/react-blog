@@ -27,4 +27,6 @@ export const uploadImage = (
 		dispatch && dispatch(setImage(imageUrl))
 		setImage(imageUrl)
 	}
+
+	ref.current.value = ''
 }
