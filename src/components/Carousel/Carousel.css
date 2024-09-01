@@ -1,0 +1,10 @@
+.carousel-container {
+	display: flex;
+	flex-direction: row;
+	gap: 15px;
+	list-style: none;
+}
+
+.carousel-container li {
+	background-color: red;
+}

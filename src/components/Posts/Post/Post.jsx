@@ -1,3 +1,5 @@
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
+
 import { useRef, useState } from 'react'
 import Modal from '../../Modal/Modal'
 import PostCard from '../PostCard/PostCard'
@@ -7,12 +9,59 @@ function Post({ img, title, description }) {
 	const imageRefs = useRef(null)
 	const [fullImgActive, setFullImgActive] = useState(false)
 	const [activeImg, setActiveImg] = useState({ imageUrl: '', orientation: '' })
+	const [visibleImage, setVisibleImage] = useState(0)
+	const postImages = img.map((el, id) => (
+		<div
+			className={`post-image__container ${
+				el.orientation === 'book' ? 'book' : 'portrait'
+			}`}
+			key={id}
+			onClick={() => {
+				setFullImgActive(true)
+				setActiveImg({
+					imageUrl: el.img,
+					orientation: el.orientation,
+				})
+			}}
+		>
+			<div
+				className='post-image__background'
+				style={{ backgroundImage: `url(${el.img})` }}
+				key={id}
+			></div>
+			<div className='post-image__main-image'>
+				<img src={el.img} ref={imageRefs} />
+			</div>
+		</div>
+	))
 
 	return (
 		<PostCard>
 			<h6>TAGS</h6>
 			<div className='post-image__wrapper'>
-				{img.map((el, id) => (
+				{postImages[visibleImage]}
+				{/* <div className='post-image__carousel-navigation'> */}
+				<MdNavigateBefore
+					className='post-image__carousel-element'
+					onClick={e => {
+						e.stopPropagation()
+						setVisibleImage(
+							visibleImage - 1 < 0 ? postImages.length - 1 : visibleImage - 1
+						)
+					}}
+				/>
+				<MdNavigateNext
+					className='post-image__carousel-element'
+					onClick={e => {
+						e.stopPropagation()
+
+						setVisibleImage(
+							visibleImage + 1 > postImages.length - 1 ? 0 : visibleImage + 1
+						)
+					}}
+				/>
+				{/* </div> */}
+				{/* {img.map((el, id) => (
 					<div
 						className={`post-image__container ${
 							el.orientation === 'book' ? 'book' : 'portrait'
@@ -40,7 +89,7 @@ function Post({ img, title, description }) {
 							/>
 						</div>
 					</div>
-				))}
+				))} */}
 			</div>
 			<Modal active={fullImgActive} setActive={setFullImgActive} isImage={true}>
 				<div

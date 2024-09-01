@@ -10,6 +10,7 @@ function PostsList() {
 		<div className={Styles['posts-list__wrapper']}>
 			<div className={Styles['posts-list__container']}>
 				{posts.length === 0 && <h2>No posts</h2>}
+
 				{posts.map((el, id) => {
 					return (
 						<Post
