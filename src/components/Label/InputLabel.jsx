@@ -5,9 +5,11 @@ function InputLabel({
 	id,
 	type,
 	onChange,
+	onKeyDown,
 	value,
 	maxLength,
 	required = false,
+	placeholder,
 }) {
 	return (
 		<div className={Styles['input-container']}>
@@ -22,7 +24,9 @@ function InputLabel({
 				value={value}
 				required={required}
 				onChange={onChange}
+				onKeyDown={onKeyDown}
 				maxLength={maxLength && null}
+				placeholder={placeholder}
 			/>
 		</div>
 	)

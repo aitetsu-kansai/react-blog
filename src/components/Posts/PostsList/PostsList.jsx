@@ -17,6 +17,8 @@ function PostsList() {
 							img={el.image}
 							title={el.title}
 							description={el.description}
+							date={el.date}
+							tags = {el.tags}
 							key={id}
 						/>
 					)

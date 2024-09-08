@@ -8,7 +8,6 @@ export const uploadImage = (
 	const files = multiple ? ref?.current?.files : ref?.current?.files[0]
 
 	if (files && multiple && files.length) {
-		console.log(files)
 		const imageUrls = Array.from(files).map(el => {
 			const imageUrl = URL.createObjectURL(el)
 			let orientation = ''

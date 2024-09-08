@@ -5,6 +5,7 @@ import { IoClose } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { setInfo } from '../../../redux/slices/infoSlice.js'
 import { addPost } from '../../../redux/slices/postsSlice.js'
+import { getDate } from '../../../utils/getDate.js'
 import { uploadImage } from '../../../utils/uploadImage.js'
 import Button from '../../Button/Button.jsx'
 import InputLabel from '../../Label/InputLabel.jsx'
@@ -17,15 +18,19 @@ function PostCreator({ setActive }) {
 
 	const [title, setTitle] = useState('')
 	const [tags, setTags] = useState([])
+	const [tag, setTag] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState([])
+	const [date, setDate] = useState(null)
 	const [removingImageIndex, setRemovingImageIndex] = useState(null)
 	const dispatch = useDispatch()
 
 	const handleFormSubmit = e => {
 		e.preventDefault()
+		const curDate = getDate()
+		setDate(curDate)
 		if ((title && description) || image) {
-			dispatch(addPost({ title, tags, description, image }))
+			dispatch(addPost({ title, tags, description, image, date: curDate }))
 			dispatch(
 				setInfo({
 					infoCategory: 'success',
@@ -37,6 +42,8 @@ function PostCreator({ setActive }) {
 			setTags([])
 			setDescription('')
 			setImage([])
+			setDate(null)
+			setTag('')
 		} else {
 			dispatch(
 				setInfo({ infoCategory: 'error', infoMessage: `Fill the post's info` })
@@ -64,6 +71,31 @@ function PostCreator({ setActive }) {
 		}, 300)
 	}
 
+	const handleKeyDown = e => {
+		const value = e.target.value
+		if (value.includes(' ')) {
+			const trimmedValue = value.trim()
+			if (trimmedValue && tags.length < 10) {
+				setTags([...tags, trimmedValue])
+			} else {
+				dispatch(
+					setInfo({
+						infoCategory: 'error',
+						infoMessage: 'No more than 10 tags are available',
+					})
+				)
+			}
+			e.target.value = ''
+			setTag('')
+		} else {
+			setTag(value)
+		}
+	}
+
+	const handleDeleteTag = id => {
+		setTags(tags.filter((_, i) => i !== id))
+	}
+
 	return (
 		<div className={Styles['post-creator__container']}>
 			<h3>Create a new post</h3>
@@ -74,14 +106,28 @@ function PostCreator({ setActive }) {
 				<PostCard>
 					<div className={Styles['post-creator__container']}>
 						<div className={Styles['post-creator__card-tag']}>
+							<div className={Styles['tags-input-container']}>
+								{tags.map((el, id) => (
+									<div className={Styles['tag-item']} key={id}>
+										<span className={Styles['tag-text']}>{el}</span>
+										<span
+											className={Styles['close']}
+											onClick={() => {
+												handleDeleteTag(id)
+											}}
+										>
+											&times;
+										</span>
+									</div>
+								))}
+							</div>
 							<InputLabel
-								title={'Tags'}
+								title={`Tags ${tags.length} / 10`}
 								id={'tags'}
-								// onChange={e => {
-								// 	setTags(tags.push(e.target.value))
-								// }}
-								// value={tags[0]}
-							/>
+								value={tag}
+								onChange={handleKeyDown}
+								placeholder={'"Space" to add a tag'}
+							/>{' '}
 						</div>
 						<div className={Styles['post-creator__card-input']}>
 							<label className={Styles['post-creator__label']} htmlFor='image'>
@@ -92,6 +138,17 @@ function PostCreator({ setActive }) {
 								type='file'
 								id={'image'}
 								onChange={() => {
+									const files = imageRef.current.files
+									if (files.length > 15) {
+										dispatch(
+											setInfo({
+												infoCategory: 'error',
+												infoMessage:
+													'The maximum number of photos that can be uploaded is 15',
+											})
+										)
+										return
+									}
 									uploadImage(imageRef, image, setImage, ...[,], true)
 								}}
 								multiple
@@ -120,7 +177,9 @@ function PostCreator({ setActive }) {
 								>
 									<IoClose
 										className={Styles['post-images__clear-ico']}
-										onClick={() => handleImageDelete(id)}
+										onClick={() => {
+											handleImageDelete(id)
+										}}
 									/>
 
 									<img

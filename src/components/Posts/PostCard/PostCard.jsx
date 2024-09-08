@@ -2,12 +2,10 @@ import { useState } from 'react'
 import { CiBookmark, CiBookmarkCheck } from 'react-icons/ci'
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../../redux/slices/profileSlice'
-import { getDate } from '../../../utils/getDate'
 import './PostCard.css'
 
-function PostCard({ children }) {
+function PostCard({ children, postDate }) {
 	const profile = useSelector(selectProfile)
-
 	const [isFavourite, setIsFavourite] = useState(false)
 
 	const handleFavourite = () => {
@@ -21,7 +19,7 @@ function PostCard({ children }) {
 					<img src={profile.avatarUrl} alt='profile avatar' />
 					<div className='post-author-date__container'>
 						<p>{profile.name ? profile.name : profile.nickname}</p>
-						<p>Created: {getDate()}</p>
+						<p>Created: {postDate}</p>
 					</div>
 					<span onClick={handleFavourite} style={{ marginLeft: 'auto' }}>
 						{isFavourite ? (
