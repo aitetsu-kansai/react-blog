@@ -23,6 +23,7 @@ function PostCreator({ setActive }) {
 	const [image, setImage] = useState([])
 	const [date, setDate] = useState(null)
 	const [removingImageIndex, setRemovingImageIndex] = useState(null)
+	const [isTagLimitReached, setIsTagLimitReached] = useState(false)
 	const dispatch = useDispatch()
 
 	const handleFormSubmit = e => {
@@ -75,9 +76,27 @@ function PostCreator({ setActive }) {
 		const value = e.target.value
 		if (value.includes(' ')) {
 			const trimmedValue = value.trim()
-			if (trimmedValue && tags.length < 10) {
-				setTags([...tags, trimmedValue])
-			} else {
+			if (value.length > 30) {
+				dispatch(
+					setInfo({
+						infoCategory: 'error',
+						infoMessage: 'No more than 30 letters in one tag',
+					})
+				)
+			} else if (tags.includes(tag)) {
+				dispatch(
+					setInfo({
+						infoCategory: 'error',
+						infoMessage: 'There is the same tag',
+					})
+				)
+				e.target.value = ''
+				setTag('')
+				return
+			} else if (trimmedValue && tags.length < 10) {
+				setTags(prevTags => [...prevTags, trimmedValue])
+			} else if (tags.length >= 10 && !isTagLimitReached) {
+				setIsTagLimitReached(true)
 				dispatch(
 					setInfo({
 						infoCategory: 'error',
@@ -93,6 +112,7 @@ function PostCreator({ setActive }) {
 	}
 
 	const handleDeleteTag = id => {
+		setIsTagLimitReached(false)
 		setTags(tags.filter((_, i) => i !== id))
 	}
 

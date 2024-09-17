@@ -1,6 +1,6 @@
 .profile-additional-info {
 	display: grid;
-	grid-template-columns: repeat(1, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	text-align: center;
 	text-align: start;
 	gap: 15px;
@@ -34,8 +34,11 @@
 	flex-direction: column;
 	justify-content: start;
 	align-items: center;
-	border-right: 1px var(--secondary-text-color) solid;
-	z-index: 2;
+	border-bottom: 1px var(--secondary-text-color) solid;
+}
+
+.profile-avatar-wrapper h3 {
+	margin-top: 10px;
 }
 
 .profile-avatar img {
@@ -50,11 +53,7 @@
 	align-items: center;
 	border-top: 1px solid var(--secondary-text-color);
 	padding: 30px;
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	gap: 20px;
-	grid-template-columns: 1fr 1.2fr;
-}
-
-.profile-avatar h3 {
-	margin: 15px;
 }

@@ -18,7 +18,9 @@ function ProfileSettings() {
 
 	const [userData, setUserData] = useState({
 		name: user.name,
+		surname: user.surname,
 		birth: user.birth,
+		gender: user.gender,
 		nickname: user.nickname,
 		email: user.email,
 		description: user.description,
@@ -65,7 +67,19 @@ function ProfileSettings() {
 							required={true}
 						/>
 					</div>
-
+					<div className={Styles['form-label']}>
+						<InputLabel
+							title='Surname'
+							id='surname'
+							type='text'
+							value={userData.surname}
+							onChange={e => {
+								setUserData({ ...userData, surname: e.target.value })
+							}}
+							maxLength={20}
+							required={true}
+						/>
+					</div>
 					<div className={Styles['form-label']}>
 						<InputLabel
 							title='Nickname'
@@ -87,9 +101,26 @@ function ProfileSettings() {
 							type='date'
 							value={userData.birth}
 							onChange={e => {
+								console.log(e.target.value)
 								setUserData({ ...userData, birth: e.target.value })
 							}}
 						/>
+					</div>
+					<div className={Styles['form-label']}>
+						<div className={Styles['gender-label']}>
+							<label htmlFor='gender'>Gender:</label>
+							<select
+								id='gender'
+								value={userData.gender}
+								onChange={e => {
+									setUserData({ ...userData, gender: e.target.value })
+								}}
+							>
+								<option value=''>Select your gender</option>
+								<option value='male'>Male</option>
+								<option value='female'>Female</option>
+							</select>
+						</div>
 					</div>
 
 					<div className={Styles['form-label']}>

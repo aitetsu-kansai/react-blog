@@ -16,14 +16,12 @@ function ProfileAdditionalInfo() {
 				<div className={Styles['profile-avatar-wrapper']}>
 					<div className={Styles['profile-avatar']}>
 						<img src={profile.avatarUrl} alt='background' />
-						<h3>{profile.nickname}</h3>
 					</div>
+					<h3>
+						{profile.name} {profile.surname}
+					</h3>
 				</div>
 				<div className={Styles['profile-additional-info']}>
-					<p>
-						<span className={Styles['profile-data-name']}>Name: </span>
-						{profile.name}
-					</p>
 					<p>
 						<span className={Styles['profile-data-name']}>Nickname: </span>
 						{profile.nickname}
@@ -38,6 +36,12 @@ function ProfileAdditionalInfo() {
 						<p>
 							<span className={Styles['profile-data-name']}>Birth: </span>
 							{profile.birth}
+						</p>
+					)}
+					{profile.gender && (
+						<p>
+							<span className={Styles['profile-data-name']}>Gender: </span>
+							{profile.gender}
 						</p>
 					)}
 					{profile.email && (

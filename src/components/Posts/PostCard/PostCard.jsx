@@ -18,7 +18,11 @@ function PostCard({ children, postDate }) {
 				<div className='post-author__info'>
 					<img src={profile.avatarUrl} alt='profile avatar' />
 					<div className='post-author-date__container'>
-						<p>{profile.name ? profile.name : profile.nickname}</p>
+						<p>
+							{profile.name && profile.surname
+								? `${profile.name} ${profile.surname}`
+								: profile.nickname}
+						</p>
 						<p>Created: {postDate}</p>
 					</div>
 					<span onClick={handleFavourite} style={{ marginLeft: 'auto' }}>

@@ -76,7 +76,14 @@ function ProfileInfo() {
 				</div>
 			</div>
 			<div className={Styles['data-wrapper']}>
-				<h1>{profile.nickname}</h1>
+				<div className={Styles['profile-name']}>
+					<h1>
+						{profile.name} {profile.surname}
+					</h1>
+					<h4>
+						aka <span>{profile.nickname}</span>
+					</h4>
+				</div>
 				{profile.description ? (
 					<p className={Styles['profile-description']}>
 						{' '}

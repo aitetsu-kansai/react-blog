@@ -118,6 +118,12 @@
 	opacity: 0;
 }
 
+.profile-name {
+	display: flex;
+	flex-direction: column;
+	gap: 0px;
+}
+
 .data-wrapper {
 	background-color: var(--background-secondary-color);
 	width: 30%;
@@ -129,8 +135,20 @@
 }
 
 .data-wrapper h1 {
-	background-color: var(--background-secondary-color);
 	color: var(--primary-text-color);
+	padding-top: 1.7rem;
+	margin: 0;
+}
+
+.data-wrapper h4 {
+	color: var(--primary-text-color);
+	padding: 0;
+	margin: 0;
+	font-weight: 400;
+}
+
+.data-wrapper h4 span {
+	font-weight: bold;
 }
 
 .more-info-container {

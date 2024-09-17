@@ -2,27 +2,82 @@
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 15px;
+	width: 100%;
+}
+
+.form-label {
+	margin-inline: 15px;
 }
 
 .form-label label {
 	color: var(--secondary-text-color);
-	font-size: 14px;
+	font-size: clamp(12px, 14px, 18px);
 	padding: 5px;
 }
 
-.form-label {
+.gender-label {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-	gap: 5px;
+	gap: 10px;
+}
+
+.gender-label select {
+	width: clamp(50%, 100%, 100%);
+	width: 220px;
+
+	font-weight: 500;
+	font-size: 17px;
+	color: #fff;
+	background-color: rgb(28, 28, 30);
+	box-shadow: 0 0 0.4vw rgba(0, 0, 0, 0.5), 0 0 0 0.15vw transparent;
+	border-radius: 0.4vw;
+	border: none;
+	outline: none;
+	padding: 0.4vw;
+	box-sizing: border-box;
+	transition: 0.4s;
 }
 
 .description {
 	grid-column: span 2;
-	margin: 20px;
+	margin-top: 20px;
+}
+
+.description textarea {
+	font-size: clamp(12px, 14px, 22px);
+}
+
+.gender-label select:hover {
+	box-shadow: 0 0 0 0.15vw rgba(255, 255, 255, 0.186);
+}
+
+.gender-label select:focus {
+	box-shadow: 0 0 0 0.15vw rgb(202, 202, 202);
 }
 
 .button-container {
 	display: flex;
 	justify-content: center;
+}
+
+@media (max-width: 920px) {
+	.settings {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+		width: 100%;
+	}
+	.form-label input {
+		width: 80%;
+	}
+
+	.description textarea {
+		font-size: 12px;
+	}
+
+	.gender-label select {
+		width: 80%;
+	}
 }
