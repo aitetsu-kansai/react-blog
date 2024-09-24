@@ -25,7 +25,7 @@ function InputLabel({
 				required={required}
 				onChange={onChange}
 				onKeyDown={onKeyDown}
-				maxLength={maxLength && null}
+				maxLength={maxLength || null}
 				placeholder={placeholder}
 			/>
 		</div>

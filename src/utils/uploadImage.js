@@ -15,6 +15,7 @@ export const uploadImage = (
 			img.src = imageUrl
 			img.onload = () => {
 				orientation = img.naturalHeight > img.naturalWidth ? 'book' : 'portrait'
+
 				setImage(prevImages => [...prevImages, { img: imageUrl, orientation }])
 				dispatch &&
 					dispatch(setImage([...image, { img: imageUrl, orientation }]))

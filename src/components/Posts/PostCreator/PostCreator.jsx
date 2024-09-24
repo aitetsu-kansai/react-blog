@@ -1,19 +1,21 @@
 import { useRef, useState } from 'react'
 
-import { FaCloudArrowDown } from 'react-icons/fa6'
 import { IoClose } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { setInfo } from '../../../redux/slices/infoSlice.js'
 import { addPost } from '../../../redux/slices/postsSlice.js'
 import { getDate } from '../../../utils/getDate.js'
-import { uploadImage } from '../../../utils/uploadImage.js'
+import { uploadImage } from '../../../utils/uploadImage'
 import Button from '../../Button/Button.jsx'
+import ImageInputLabel from '../../Label/ImageInputLabel.jsx'
 import InputLabel from '../../Label/InputLabel.jsx'
 import TextareaLabel from '../../Label/TextareaLabel.jsx'
 import PostCard from '../PostCard/PostCard.jsx'
 import Styles from './PostCreator.module.css'
 
 function PostCreator({ setActive }) {
+	const MAX_TAG_LENGTH = 20
+	const MAX_FILE_IN_MB = 15
 	const imageRef = useRef(null)
 
 	const [title, setTitle] = useState('')
@@ -26,18 +28,17 @@ function PostCreator({ setActive }) {
 	const [isTagLimitReached, setIsTagLimitReached] = useState(false)
 	const dispatch = useDispatch()
 
+	const dispatchInfo = (infoCategory, infoMessage) => {
+		dispatch(setInfo({ infoCategory, infoMessage }))
+	}
+
 	const handleFormSubmit = e => {
 		e.preventDefault()
 		const curDate = getDate()
 		setDate(curDate)
 		if ((title && description) || image) {
 			dispatch(addPost({ title, tags, description, image, date: curDate }))
-			dispatch(
-				setInfo({
-					infoCategory: 'success',
-					infoMessage: 'The post was successfully created',
-				})
-			)
+			dispatchInfo('success', 'The post was successfully created')
 			setActive(false)
 			setTitle('')
 			setTags([])
@@ -46,9 +47,7 @@ function PostCreator({ setActive }) {
 			setDate(null)
 			setTag('')
 		} else {
-			dispatch(
-				setInfo({ infoCategory: 'error', infoMessage: `Fill the post's info` })
-			)
+			dispatchInfo('error', `Fill the post's info`)
 		}
 	}
 
@@ -76,20 +75,14 @@ function PostCreator({ setActive }) {
 		const value = e.target.value
 		if (value.includes(' ')) {
 			const trimmedValue = value.trim()
-			if (value.length > 30) {
-				dispatch(
-					setInfo({
-						infoCategory: 'error',
-						infoMessage: 'No more than 30 letters in one tag',
-					})
+			if (value.length > MAX_TAG_LENGTH) {
+				dispatchInfo(
+					'error',
+					`No more than ${MAX_TAG_LENGTH} letters in one tag`
 				)
 			} else if (tags.includes(tag)) {
-				dispatch(
-					setInfo({
-						infoCategory: 'error',
-						infoMessage: 'There is the same tag',
-					})
-				)
+				dispatchInfo('error', 'There is the same tag')
+
 				e.target.value = ''
 				setTag('')
 				return
@@ -97,12 +90,7 @@ function PostCreator({ setActive }) {
 				setTags(prevTags => [...prevTags, trimmedValue])
 			} else if (tags.length >= 10 && !isTagLimitReached) {
 				setIsTagLimitReached(true)
-				dispatch(
-					setInfo({
-						infoCategory: 'error',
-						infoMessage: 'No more than 10 tags are available',
-					})
-				)
+				dispatchInfo('error', 'No more than 10 tags are available')
 			}
 			e.target.value = ''
 			setTag('')
@@ -114,6 +102,30 @@ function PostCreator({ setActive }) {
 	const handleDeleteTag = id => {
 		setIsTagLimitReached(false)
 		setTags(tags.filter((_, i) => i !== id))
+	}
+
+	const handleOnChange = () => {
+		const maxSizeInBytes = MAX_FILE_IN_MB * (1024 * 1024)
+		const files = imageRef.current.files
+		const overSizedFiles = Array.from(files).filter(
+			file => file.size > maxSizeInBytes
+		)
+		if (files.length > MAX_TAG_LENGTH) {
+			dispatchInfo(
+				'error',
+				'The maximum number of photos that can be uploaded is 15'
+			)
+
+			return
+		}
+		if (overSizedFiles.length > 0) {
+			dispatchInfo('error', `Each file must be less than ${MAX_FILE_IN_MB}MB`)
+
+			imageRef.current.value = ''
+			return
+		}
+
+		uploadImage(imageRef, image, setImage, ...[,], true)
 	}
 
 	return (
@@ -150,30 +162,11 @@ function PostCreator({ setActive }) {
 							/>{' '}
 						</div>
 						<div className={Styles['post-creator__card-input']}>
-							<label className={Styles['post-creator__label']} htmlFor='image'>
-								{' '}
-								{<FaCloudArrowDown />} Click to Upload
-							</label>
-							<input
-								type='file'
-								id={'image'}
-								onChange={() => {
-									const files = imageRef.current.files
-									if (files.length > 15) {
-										dispatch(
-											setInfo({
-												infoCategory: 'error',
-												infoMessage:
-													'The maximum number of photos that can be uploaded is 15',
-											})
-										)
-										return
-									}
-									uploadImage(imageRef, image, setImage, ...[,], true)
-								}}
-								multiple
+							<ImageInputLabel
+								id='image'
+								onChange={handleOnChange}
+								multiple={true}
 								ref={imageRef}
-								className={Styles['post-creator__input']}
 							/>
 							{image.length > 0 ? (
 								<Button
@@ -218,6 +211,7 @@ function PostCreator({ setActive }) {
 								onChange={e => {
 									setTitle(e.target.value)
 								}}
+								maxLength={50}
 							/>
 						</div>
 						<div className={Styles['post-creator__card-description']}>

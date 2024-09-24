@@ -1,0 +1,30 @@
+.post-creator__input {
+	display: none;
+}
+
+.post-creator__label {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid white;
+	border-radius: 22px;
+	padding-inline: 30px;
+	padding-block: 7px;
+	transition: 0.3s all ease-in-out;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.post-creator__label:hover {
+	background-color: white;
+	color: black;
+}
+
+.post-creator__label:hover .post-creator__label svg {
+	color: black;
+}
+
+.post-creator__label svg {
+	font-size: 4rem;
+}

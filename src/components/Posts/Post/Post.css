@@ -35,7 +35,7 @@
 	transition: 0.2s all ease-in-out;
 }
 
-.post-image__container--change {
+.post-image__container--change > div {
 	opacity: 0.4;
 }
 
@@ -81,7 +81,6 @@
 
 .carousel-indicator {
 	transition: 0.3s all ease-in-out;
-	/* font-size: 1.1rem; */
 }
 div:hover ~ .carousel-indicators__wrapper {
 	opacity: 0;
@@ -90,13 +89,7 @@ div:hover ~ .carousel-indicators__wrapper {
 .carousel-indicator-active {
 	opacity: 1;
 	transform: scale(1.15) translateZ(0);
-	transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55),
-		opacity 0.3s ease-in-out;
-}
-
-.carousel-indicator--change {
-	transform: scale(0.85) translateZ(0);
-	transition: transform 0.1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.1s ease;
+	transition: transform 0.15s, opacity 0.2s ease-in-out;
 }
 
 @keyframes fadeInScale {
@@ -117,27 +110,8 @@ div:hover ~ .carousel-indicators__wrapper {
 	}
 }
 
-@keyframes fadeOutScale {
-	0% {
-		opacity: 1;
-		transform: scale(1.15) translateZ(0);
-	}
-	50% {
-		opacity: 0.7;
-		transform: scale(1) translateZ(0);
-	}
-	100% {
-		opacity: 0.6;
-		transform: scale(0.85) translateZ(0);
-	}
-}
-
 .carousel-indicator-active {
 	animation: fadeInScale 0.2s forwards;
-}
-
-.carousel-indicator--change {
-	animation: fadeOutScale 0.2s forwards;
 }
 
 .modal__image-container {
@@ -219,20 +193,3 @@ div:hover ~ .carousel-indicators__wrapper {
 	border: none;
 	outline: none;
 }
-
-/* .modal__image-container.portrait img {
-	width: 90%;
-	width: 100%;
-	max-height: calc(90vh - 40px);
-}
-
-.modal__image-container.book img {
-	width: 100%;
-	max-height: calc(90vh - 40px);
-	object-fit: contain;
-} */
-
-/* .modal__image-container.book {
-	width: 100%;
-	height: 100%;
-} */
