@@ -58,6 +58,7 @@ function PostBar() {
 					title='Add new post'
 					onClick={() => {
 						setCreatorActive(true)
+						//!!! important
 						// profile.name && profile.email
 						// 	? setCreatorActive(true)
 						// 	: dispatch(

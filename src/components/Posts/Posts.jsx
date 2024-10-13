@@ -1,7 +1,6 @@
 import PostBar from './PostBar/PostBar'
 import Styles from './Posts.module.css'
 import PostsList from './PostsList/PostsList'
-import PostCreator from "./PostCreator/PostCreator"
 
 function Posts() {
 	return (

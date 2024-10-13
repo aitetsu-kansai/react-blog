@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { IoClose } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid'
 import { setInfo } from '../../../redux/slices/infoSlice.js'
-import { addPost } from '../../../redux/slices/postsSlice.js'
 import { getDate } from '../../../utils/getDate.js'
 import { uploadImage } from '../../../utils/uploadImage'
 import Button from '../../Button/Button.jsx'
@@ -12,6 +12,7 @@ import InputLabel from '../../Label/InputLabel.jsx'
 import TextareaLabel from '../../Label/TextareaLabel.jsx'
 import PostCard from '../PostCard/PostCard.jsx'
 import Styles from './PostCreator.module.css'
+import { addPost, fetchPosts } from '../../../redux/slices/postsSlice.js'
 
 function PostCreator({ setActive }) {
 	const MAX_TAG_LENGTH = 20
@@ -24,6 +25,7 @@ function PostCreator({ setActive }) {
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState([])
 	const [date, setDate] = useState(null)
+	const [id, setId] = useState('')
 	const [removingImageIndex, setRemovingImageIndex] = useState(null)
 	const [isTagLimitReached, setIsTagLimitReached] = useState(false)
 	const dispatch = useDispatch()
@@ -32,20 +34,74 @@ function PostCreator({ setActive }) {
 		dispatch(setInfo({ infoCategory, infoMessage }))
 	}
 
-	const handleFormSubmit = e => {
+	useEffect(() => {
+		dispatch(fetchPosts('http://localhost:3000/api/post'))
+	}, [])
+
+	// const handleFormSubmit = e => {
+	// 	e.preventDefault()
+	// 	const curDate = getDate()
+	// 	setDate(curDate)
+	// 	if ((title && description) || image) {
+	// 		dispatch(addPost({ title, tags, description, image, date: curDate }))
+	// 		dispatchInfo('success', 'The post was successfully created')
+	// 		setActive(false)
+	// 		setTitle('')
+	// 		setTags([])
+	// 		setDescription('')
+	// 		setImage([])
+	// 		setDate(null)
+	// 		setTag('')
+	// 	} else {
+	// 		dispatchInfo('error', `Fill the post's info`)
+	// 	}
+	// }
+
+	const handleFormSubmit = async e => {
 		e.preventDefault()
 		const curDate = getDate()
 		setDate(curDate)
 		if ((title && description) || image) {
-			dispatch(addPost({ title, tags, description, image, date: curDate }))
-			dispatchInfo('success', 'The post was successfully created')
-			setActive(false)
-			setTitle('')
-			setTags([])
-			setDescription('')
-			setImage([])
-			setDate(null)
-			setTag('')
+			const newPost = {
+				title,
+				tags,
+				description,
+				image,
+				date: curDate,
+				id: uuidv4(),
+			}
+
+			try {
+				const response = await fetch('http://localhost:3000/api/post', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(newPost),
+				})
+
+				if (response.ok) {
+					const savedPost = await response.json()
+					dispatch(addPost(savedPost))
+
+					dispatchInfo('success', 'The post was successfully created')
+					setActive(false)
+					setTitle('')
+					setTags([])
+					setDescription('')
+					setImage([])
+					setDate(null)
+					setId('')
+					setTag('')
+					// dispatch(fetchPost('http://localhost:3000/api/post'))
+					return savedPost
+				} else {
+					dispatchInfo('error', `Failed to save post`)
+				}
+			} catch (error) {
+				console.error('Error:', error)
+				dispatchInfo('error', error + '')
+			}
 		} else {
 			dispatchInfo('error', `Fill the post's info`)
 		}

@@ -1,10 +1,11 @@
 import Styles from './ProfileSettings.module.css'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setInfo } from '../../../redux/slices/infoSlice'
 import {
 	changeProfileInfo,
+	fetchProfileData,
 	selectProfile,
 } from '../../../redux/slices/profileSlice'
 import { deepEqual } from '../../../utils/deepEqual'
@@ -24,9 +25,14 @@ function ProfileSettings() {
 		nickname: user.nickname,
 		email: user.email,
 		description: user.description,
+		favouritePosts: user.favouritePosts
 	})
 
-	const handleSubmitForm = e => {
+	useEffect(() => {
+		dispatch(fetchProfileData('http://localhost:3000/api/profile'))
+	}, [])
+
+	const handleSubmitForm = async e => {
 		e.preventDefault()
 		if (deepEqual(user, userData)) {
 			dispatch(
@@ -38,10 +44,26 @@ function ProfileSettings() {
 			return
 		}
 
-		dispatch(changeProfileInfo(userData))
-		dispatch(
-			setInfo({ infoCategory: 'success', infoMessage: 'Profile info updated' })
-		)
+		try {
+			const response = await fetch('http://localhost:3000/api/profile', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(userData),
+			})
+
+			if (response.ok) {
+				const savedProfileData = await response.json()
+				dispatch(changeProfileInfo(savedProfileData))
+				dispatch(
+					setInfo({
+						infoCategory: 'success',
+						infoMessage: 'Profile info updated',
+					})
+				)
+			}
+		} catch (error) {
+			dispatch(setInfo({ infoCategory: 'error', infoMesasge: error }))
+		}
 	}
 
 	return (

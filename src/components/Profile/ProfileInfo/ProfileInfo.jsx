@@ -1,10 +1,10 @@
 import { LuInfo } from 'react-icons/lu'
 import { PiTextAlignLeftFill } from 'react-icons/pi'
 
-import { useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { MdPhotoCamera } from 'react-icons/md'
 import { TbPhoto } from 'react-icons/tb'
-import { useDispatch, useSelector } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { setInfo } from '../../../redux/slices/infoSlice'
 import {
 	selectProfile,
@@ -18,13 +18,21 @@ import ProfileAdditionalInfo from '../ProfileAdditionalInfo/ProfileAdditionalInf
 import ProfileSettings from '../ProfileSettings/ProfileSettings'
 import Styles from './ProfileInfo.module.css'
 
-function ProfileInfo() {
+const ProfileInfo = () => {
 	const [settingsActive, setSettingsActive] = useState(false)
 	const [userInfoActive, setUserInfoActive] = useState(false)
 	const dispatch = useDispatch()
-	const profile = useSelector(selectProfile)
+	const profile = useSelector(selectProfile, shallowEqual)
 	const bannerRef = useRef(null)
 	const avatarRef = useRef(null)
+
+	const handleBannerChange = useCallback(() => {
+		uploadImage(bannerRef, ...[,], setProfileBanner, dispatch)
+	}, [bannerRef, dispatch])
+
+	const handleAvatarChange = useCallback(() => {
+		uploadImage(avatarRef, ...[,], setProfileAvatar, dispatch)
+	}, [avatarRef, dispatch])
 
 	return (
 		<div className={Styles['main-wrapper']}>
@@ -40,15 +48,19 @@ function ProfileInfo() {
 									title='Change background'
 								/>
 							</label>
-							<input
-								type='file'
-								accept='image/jpeg, image/png, image/jpg'
-								id='input-background'
-								onChange={() => {
-									uploadImage(bannerRef, ...[,], setProfileBanner, dispatch)
-								}}
-								ref={bannerRef}
-							/>
+							<form
+								action='/upload'
+								method='POST'
+								encType='multipart/form-data'
+							>
+								<input
+									type='file'
+									accept='image/jpeg, image/png, image/jpg'
+									id='input-background'
+									onChange={handleBannerChange}
+									ref={bannerRef}
+								/>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -66,9 +78,7 @@ function ProfileInfo() {
 								type='file'
 								accept='image/jpeg, image/png, image/jpg'
 								id='input-avatar'
-								onChange={() => {
-									uploadImage(avatarRef, ...[,], setProfileAvatar, dispatch)
-								}}
+								onChange={handleAvatarChange}
 								ref={avatarRef}
 							/>
 						</div>

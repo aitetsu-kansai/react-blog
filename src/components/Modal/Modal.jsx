@@ -1,6 +1,7 @@
+import React from 'react'
 import './Modal.css'
 
-function Modal({ active, setActive, children, isImage = false }) {
+const Modal = React.memo(({ active, setActive, children, isImage = false }) => {
 	return (
 		<div
 			className={`modal ${active ? 'active' : ''}`}
@@ -18,6 +19,6 @@ function Modal({ active, setActive, children, isImage = false }) {
 			</div>
 		</div>
 	)
-}
+})
 
 export default Modal
