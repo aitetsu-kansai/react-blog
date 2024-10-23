@@ -1,14 +1,35 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setInfo } from '../../../redux/slices/infoSlice'
-import { selectPosts } from '../../../redux/slices/postsSlice'
+import {
+	selectIsShowFavPosts,
+	selectPosts,
+} from '../../../redux/slices/postsSlice'
+import { selectProfile } from '../../../redux/slices/profileSlice'
 import Post from '../Post/Post'
 import Styles from './PostList.module.css'
 
 function PostsList() {
 	const posts = useSelector(selectPosts)
+	const showFavouritePosts = useSelector(selectIsShowFavPosts)
+	const favouritePosts = useSelector(selectProfile).favouritePosts
 	const [loadedPosts, setLoadedPosts] = useState([])
 	const dispatch = useDispatch()
+
+	const renderPosts = posts => {
+		return posts.length > 0
+			? posts.map(el => (
+					<Post
+						img={el.image}
+						title={el.title}
+						description={el.description}
+						date={el.date}
+						tags={el.tags}
+						id={el.id}
+						key={el.id}
+					/>
+			  ))
+			: null
+	}
 
 	// const getPosts = async () => {
 	// 	try {
@@ -62,21 +83,17 @@ function PostsList() {
 	return (
 		<div className={Styles['posts-list__wrapper']}>
 			<div className={Styles['posts-list__container']}>
-				{posts.length === 0 && <h2>No posts</h2>}
-
-				{posts.map(el => {
-					return (
-						<Post
-							img={el.image}
-							title={el.title}
-							description={el.description}
-							date={el.date}
-							tags={el.tags}
-							id={el.id}
-							key={el.id}
-						/>
+				{showFavouritePosts ? (
+					favouritePosts.length > 0 ? (
+						renderPosts(favouritePosts)
+					) : (
+						<h2>No favourite posts</h2>
 					)
-				})}
+				) : posts.length > 0 ? (
+					renderPosts(posts)
+				) : (
+					<h2>No posts</h2>
+				)}
 			</div>
 		</div>
 	)

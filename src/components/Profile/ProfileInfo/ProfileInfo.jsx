@@ -21,6 +21,7 @@ import Styles from './ProfileInfo.module.css'
 const ProfileInfo = () => {
 	const [settingsActive, setSettingsActive] = useState(false)
 	const [userInfoActive, setUserInfoActive] = useState(false)
+	const [uploadedImage, setUploadedImage] = useState(null)
 	const dispatch = useDispatch()
 	const profile = useSelector(selectProfile, shallowEqual)
 	const bannerRef = useRef(null)
@@ -33,6 +34,31 @@ const ProfileInfo = () => {
 	const handleAvatarChange = useCallback(() => {
 		uploadImage(avatarRef, ...[,], setProfileAvatar, dispatch)
 	}, [avatarRef, dispatch])
+
+	const uploadFile = async (e, imagePurpose) => {
+		// e.preventDefault()
+		const data = new FormData()
+		data.append('profileImage', e.target.files[0])
+		data.append('imagePurpose', imagePurpose)
+		try {
+			const response = await fetch('http://localhost:3000/api/profileImageUpload', {
+				method: 'POST',
+				body: data,
+			})
+			const result = await response.json()
+			if (response.ok) {
+				imagePurpose === 'banner'
+					? dispatch(setProfileBanner(result.filePath))
+					: dispatch(setProfileAvatar(result.filePath))
+				setUploadedImage(result.filePath)
+			} else {
+				dispatch(setInfo({ infoCategory: 'error', infoMessage: result.message }))
+			}
+		} catch (error) {
+			console.log('ERROR catch')
+			dispatch(setInfo({ infoCategory: 'error', infoMessage: error.message }))
+		}
+	}
 
 	return (
 		<div className={Styles['main-wrapper']}>
@@ -49,7 +75,7 @@ const ProfileInfo = () => {
 								/>
 							</label>
 							<form
-								action='/upload'
+								action='/api/banner'
 								method='POST'
 								encType='multipart/form-data'
 							>
@@ -57,7 +83,9 @@ const ProfileInfo = () => {
 									type='file'
 									accept='image/jpeg, image/png, image/jpg'
 									id='input-background'
-									onChange={handleBannerChange}
+									// onChange={handleBannerChange}
+									onChange={e => uploadFile(e, 'banner')}
+									name='banner'
 									ref={bannerRef}
 								/>
 							</form>
@@ -73,14 +101,29 @@ const ProfileInfo = () => {
 									className={Styles['change-avatar-ico']}
 									title='Change avatar'
 								/>
+								<form
+									action='/api/banner'
+									method='POST'
+									encType='multipart/form-data'
+								>
+									<input
+										type='file'
+										accept='image/jpeg, image/png, image/jpg'
+										id='input-avatar'
+										// onChange={handleBannerChange}
+										onChange={e => uploadFile(e, 'avatar')}
+										name='banner'
+										ref={avatarRef}
+									/>
+								</form>
 							</label>
-							<input
+							{/* <input
 								type='file'
 								accept='image/jpeg, image/png, image/jpg'
 								id='input-avatar'
 								onChange={handleAvatarChange}
 								ref={avatarRef}
-							/>
+							/> */}
 						</div>
 					</div>
 				</div>

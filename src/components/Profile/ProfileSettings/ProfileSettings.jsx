@@ -25,7 +25,7 @@ function ProfileSettings() {
 		nickname: user.nickname,
 		email: user.email,
 		description: user.description,
-		favouritePosts: user.favouritePosts
+		favouritePosts: user.favouritePosts,
 	})
 
 	useEffect(() => {

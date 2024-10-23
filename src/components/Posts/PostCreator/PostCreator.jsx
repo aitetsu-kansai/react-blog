@@ -4,6 +4,7 @@ import { IoClose } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import { setInfo } from '../../../redux/slices/infoSlice.js'
+import { addPost, fetchPosts } from '../../../redux/slices/postsSlice.js'
 import { getDate } from '../../../utils/getDate.js'
 import { uploadImage } from '../../../utils/uploadImage'
 import Button from '../../Button/Button.jsx'
@@ -12,11 +13,8 @@ import InputLabel from '../../Label/InputLabel.jsx'
 import TextareaLabel from '../../Label/TextareaLabel.jsx'
 import PostCard from '../PostCard/PostCard.jsx'
 import Styles from './PostCreator.module.css'
-import { addPost, fetchPosts } from '../../../redux/slices/postsSlice.js'
 
 function PostCreator({ setActive }) {
-	const MAX_TAG_LENGTH = 20
-	const MAX_FILE_IN_MB = 15
 	const imageRef = useRef(null)
 
 	const [title, setTitle] = useState('')
@@ -160,8 +158,34 @@ function PostCreator({ setActive }) {
 		setTags(tags.filter((_, i) => i !== id))
 	}
 
+	const uploadFile = async e => {
+		const data = new FormData()
+		data.append('postImages', e.target.files[0])
+
+		try {
+			const response = await fetch(
+				'http://localhost:3000/api/postImageUpload',
+				{
+					method: 'POST',
+					body: data,
+				}
+			)
+			const result = await response.json()
+			if (response.ok) {
+				console.log(result)
+				setImage([...image, result.images[0]])
+			} else {
+				dispatch(
+					setInfo({ infoCategory: 'error', infoMessage: result.message })
+				)
+			}
+		} catch (error) {
+			console.log('ERROR catch')
+			dispatch(setInfo({ infoCategory: 'error', infoMessage: error.message }))
+		}
+	}
+
 	const handleOnChange = () => {
-		const maxSizeInBytes = MAX_FILE_IN_MB * (1024 * 1024)
 		const files = imageRef.current.files
 		const overSizedFiles = Array.from(files).filter(
 			file => file.size > maxSizeInBytes
@@ -220,7 +244,7 @@ function PostCreator({ setActive }) {
 						<div className={Styles['post-creator__card-input']}>
 							<ImageInputLabel
 								id='image'
-								onChange={handleOnChange}
+								onChange={uploadFile}
 								multiple={true}
 								ref={imageRef}
 							/>

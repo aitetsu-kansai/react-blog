@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-const initialState = []
+const initialState = {
+	posts: [],
+	isShowFavouritePosts: false,
+}
 
 export const fetchPosts = createAsyncThunk(
 	'posts/fetchPost',
@@ -42,26 +45,38 @@ const postsSlice = createSlice({
 	initialState,
 	reducers: {
 		addPost: (state, action) => {
-			state.push(action.payload)
+			state.posts.push(action.payload)
 		},
 		deletePost: (state, action) => {
-			return state.filter(post => post !== action.payload)
+			return state.posts.filter(post => post !== action.payload)
 		},
 		clearAllPosts: () => {
-			return initialState
+			return initialState.posts
+		},
+		showFavPosts: state => {
+			return { ...state, isShowFavouritePosts: true }
+		},
+		showAllPosts: state => {
+			return { ...state, isShowFavouritePosts: false }
 		},
 	},
 	extraReducers: builder => {
 		builder.addCase(fetchPosts.fulfilled, (state, action) => {
 			console.log(action.payload)
-			return [...action.payload]
+			return { ...initialState, posts: [...action.payload] }
 		})
-	
 	},
 })
 
-export const { addPost, deletePost, clearAllPosts } = postsSlice.actions
+export const {
+	addPost,
+	deletePost,
+	clearAllPosts,
+	showFavPosts,
+	showAllPosts,
+} = postsSlice.actions
 
-export const selectPosts = state => state.posts
+export const selectPosts = state => state.posts.posts
+export const selectIsShowFavPosts = state => state.posts.isShowFavouritePosts
 
 export default postsSlice.reducer

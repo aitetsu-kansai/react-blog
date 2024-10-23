@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FaCircleArrowUp } from 'react-icons/fa6'
 import { GrPowerReset } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
+import { showAllPosts, showFavPosts } from '../../../redux/slices/postsSlice'
 import { selectProfile } from '../../../redux/slices/profileSlice'
 import Modal from '../../Modal/Modal'
 import PostCreator from '../PostCreator/PostCreator'
@@ -9,7 +10,6 @@ import Styles from './PostBar.module.css'
 
 function PostBar() {
 	const profile = useSelector(selectProfile)
-
 	const dispatch = useDispatch()
 
 	const [showAll, setShowAll] = useState(true)
@@ -18,14 +18,19 @@ function PostBar() {
 
 	const [creatorActive, setCreatorActive] = useState(false)
 
-	const handleClickAll = () => {
+	const handleClickAll = e => {
+		e.preventDefault()
 		setShowAll(true)
 		setShowOnlyFavourite(false)
+		dispatch(showAllPosts())
 	}
 
-	const handleClickFavourite = () => {
+	const handleClickFavourite = e => {
+		e.preventDefault()
+
 		setShowAll(false)
 		setShowOnlyFavourite(true)
+		dispatch(showFavPosts())
 	}
 
 	return (
