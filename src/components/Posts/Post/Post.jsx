@@ -10,7 +10,7 @@ function Post({ img, title, description, date, tags, id }) {
 	const imageRefs = useRef(null)
 	const [fullImgActive, setFullImgActive] = useState(false)
 	const [activeImg, setActiveImg] = useState({ imageUrl: '', orientation: '' })
-	const postImages = img.map((el, id) => (
+	const postImages = img?.map((el, id) => (
 		<div
 			className={`post-image__container ${
 				el.orientation === 'book' ? 'book' : 'portrait'
@@ -37,15 +37,17 @@ function Post({ img, title, description, date, tags, id }) {
 
 	return (
 		<PostCard postDate={date} postId={id}>
-			<h6>
-				<div className='tags-input-container'>
-					{tags.map((el, id) => (
-						<div className='tag-item' key={id}>
-							<span className='text'>{el}</span>
-						</div>
-					))}
-				</div>
-			</h6>
+			{tags.length > 0 && (
+				<h6>
+					<div className='tags-input-container'>
+						{tags?.map((el, id) => (
+							<div className='tag-item' key={id}>
+								<span className='text'>{el}</span>
+							</div>
+						))}
+					</div>
+				</h6>
+			)}
 			<div className='post-image__wrapper'>
 				{postImages.length > 1 ? (
 					<Carousel images={postImages} />

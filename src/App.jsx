@@ -7,11 +7,11 @@ import ProfileInfo from './components/Profile/ProfileInfo/ProfileInfo'
 function App() {
 	return (
 		// <React.StrictMode>
-			<div className='main'>
-				<ProfileInfo />
-				<Info />
-				<Posts />
-			</div>
+		<div className='main'>
+			<ProfileInfo />
+			<Info />
+			<Posts />
+		</div>
 		// </React.StrictMode>
 	)
 }

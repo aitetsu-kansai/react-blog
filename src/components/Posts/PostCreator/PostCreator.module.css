@@ -143,3 +143,9 @@
 	border: none;
 	outline: none;
 }
+
+@media (max-width: 1350px) {
+	.post-creator__form > div {
+		width: 70%;
+	}
+}

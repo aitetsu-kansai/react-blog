@@ -1,30 +1,16 @@
-export const uploadImage = (
-	ref,
-	image,
-	setImage,
-	dispatch,
-	multiple = false
-) => {
-	const files = multiple ? ref?.current?.files : ref?.current?.files[0]
+export const uploadImage = (ref, image, setImage) => {
+	const files = ref?.current?.files
 
-	if (files && multiple && files.length) {
+	if (!files) return
+
+	if (files.length) {
 		const imageUrls = Array.from(files).map(el => {
 			const imageUrl = URL.createObjectURL(el)
-			let orientation = ''
-			const img = new Image()
-			img.src = imageUrl
-			img.onload = () => {
-				orientation = img.naturalHeight > img.naturalWidth ? 'book' : 'portrait'
-
-				setImage(prevImages => [...prevImages, { img: imageUrl, orientation }])
-				dispatch &&
-					dispatch(setImage([...image, { img: imageUrl, orientation }]))
-			}
-			return { img: imageUrl, orientation: '' }
+			return imageUrl
 		})
+		setImage(prevImages => [...prevImages, ...imageUrls])
 	} else {
 		const imageUrl = URL.createObjectURL(files)
-		dispatch && dispatch(setImage(imageUrl))
 		setImage(imageUrl)
 	}
 

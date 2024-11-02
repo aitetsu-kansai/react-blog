@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-
 import { IoClose } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
@@ -28,6 +27,11 @@ function PostCreator({ setActive }) {
 	const [isTagLimitReached, setIsTagLimitReached] = useState(false)
 	const dispatch = useDispatch()
 
+	const [previewImage, setPreviewImage] = useState([])
+
+	const MAX_TAG_LENGTH = 20
+	const MAX_FILE_IN_MB = 15
+
 	const dispatchInfo = (infoCategory, infoMessage) => {
 		dispatch(setInfo({ infoCategory, infoMessage }))
 	}
@@ -55,73 +59,75 @@ function PostCreator({ setActive }) {
 	// 	}
 	// }
 
+	const resetForm = () => {
+		setActive(false)
+		setTitle('')
+		setTags([])
+		setDescription('')
+		setImage([])
+		setPreviewImage([])
+		setDate(null)
+		setId('')
+		setTag('')
+	}
+
 	const handleFormSubmit = async e => {
 		e.preventDefault()
 		const curDate = getDate()
 		setDate(curDate)
-		if ((title && description) || image) {
-			const newPost = {
-				title,
-				tags,
-				description,
-				image,
-				date: curDate,
-				id: uuidv4(),
-			}
 
-			try {
-				const response = await fetch('http://localhost:3000/api/post', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(newPost),
-				})
-
-				if (response.ok) {
-					const savedPost = await response.json()
-					dispatch(addPost(savedPost))
-
-					dispatchInfo('success', 'The post was successfully created')
-					setActive(false)
-					setTitle('')
-					setTags([])
-					setDescription('')
-					setImage([])
-					setDate(null)
-					setId('')
-					setTag('')
-					// dispatch(fetchPost('http://localhost:3000/api/post'))
-					return savedPost
-				} else {
-					dispatchInfo('error', `Failed to save post`)
-				}
-			} catch (error) {
-				console.error('Error:', error)
-				dispatchInfo('error', error + '')
-			}
-		} else {
+		if ((!title && description) || image) {
 			dispatchInfo('error', `Fill the post's info`)
+		}
+
+		const formData = new FormData()
+		formData.append('title', title)
+		formData.append('description', description)
+		formData.append('date', curDate)
+		formData.append('id', uuidv4())
+		image.forEach(img => formData.append('postImages', img))
+		tags.forEach(tag => formData.append('tags', tag))
+		console.log(tags)
+		try {
+			const response = await fetch('http://localhost:3000/api/post', {
+				method: 'POST',
+
+				body: formData,
+			})
+
+			if (response.ok) {
+				const savedPost = await response.json()
+				dispatch(addPost(savedPost))
+
+				dispatchInfo('success', 'The post was successfully created')
+				resetForm()
+				return savedPost
+			} else {
+				dispatchInfo('error', `Failed to save post`)
+			}
+		} catch (error) {
+			console.error('Error:', error)
+			dispatchInfo('error', error + '')
 		}
 	}
 
 	const handleImageDelete = id => {
 		setRemovingImageIndex(id)
 		setTimeout(() => {
-			setImage(img => img.filter((_, i) => i !== id))
+			setPreviewImage(img => img.filter((_, i) => i !== id))
 			setRemovingImageIndex(null)
 		}, 300)
 	}
 
 	const handleResetAllImages = () => {
-		setImage(images =>
+		setPreviewImage(images =>
 			images.map(image => ({
 				...image,
 				isRemoving: true,
 			}))
 		)
 		setTimeout(() => {
-			setImage([])
+			setPreviewImage([])
 		}, 300)
 	}
 
@@ -158,35 +164,10 @@ function PostCreator({ setActive }) {
 		setTags(tags.filter((_, i) => i !== id))
 	}
 
-	const uploadFile = async e => {
-		const data = new FormData()
-		data.append('postImages', e.target.files[0])
+	const handleOnChange = e => {
+		const maxSizeInBytes = MAX_FILE_IN_MB * (1024 * 1024)
 
-		try {
-			const response = await fetch(
-				'http://localhost:3000/api/postImageUpload',
-				{
-					method: 'POST',
-					body: data,
-				}
-			)
-			const result = await response.json()
-			if (response.ok) {
-				console.log(result)
-				setImage([...image, result.images[0]])
-			} else {
-				dispatch(
-					setInfo({ infoCategory: 'error', infoMessage: result.message })
-				)
-			}
-		} catch (error) {
-			console.log('ERROR catch')
-			dispatch(setInfo({ infoCategory: 'error', infoMessage: error.message }))
-		}
-	}
-
-	const handleOnChange = () => {
-		const files = imageRef.current.files
+		const files = Array.from(e.target.files)
 		const overSizedFiles = Array.from(files).filter(
 			file => file.size > maxSizeInBytes
 		)
@@ -204,8 +185,8 @@ function PostCreator({ setActive }) {
 			imageRef.current.value = ''
 			return
 		}
-
-		uploadImage(imageRef, image, setImage, ...[,], true)
+		setImage(files)
+		uploadImage(imageRef, previewImage, setPreviewImage)
 	}
 
 	return (
@@ -244,7 +225,8 @@ function PostCreator({ setActive }) {
 						<div className={Styles['post-creator__card-input']}>
 							<ImageInputLabel
 								id='image'
-								onChange={uploadFile}
+								// onChange={uploadFile}
+								onChange={handleOnChange}
 								multiple={true}
 								ref={imageRef}
 							/>
@@ -259,7 +241,7 @@ function PostCreator({ setActive }) {
 							)}
 						</div>
 						<div className={Styles['post-images']}>
-							{Array.from(image).map((el, id) => (
+							{Array.from(previewImage).map((el, id) => (
 								<div
 									className={`${Styles['post-images__item']} ${
 										id === removingImageIndex || el.isRemoving === true
@@ -276,7 +258,7 @@ function PostCreator({ setActive }) {
 									/>
 
 									<img
-										src={el.img}
+										src={el}
 										className={Styles['post-images__image']}
 										key={id}
 									/>

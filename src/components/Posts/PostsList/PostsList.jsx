@@ -19,7 +19,7 @@ function PostsList() {
 		return posts.length > 0
 			? posts.map(el => (
 					<Post
-						img={el.image}
+						img={el.images}
 						title={el.title}
 						description={el.description}
 						date={el.date}

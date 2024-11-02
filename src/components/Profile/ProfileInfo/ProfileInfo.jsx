@@ -1,7 +1,9 @@
-import { LuInfo } from 'react-icons/lu'
+import { LuInfo, LuTrash } from 'react-icons/lu'
 import { PiTextAlignLeftFill } from 'react-icons/pi'
+import '../../Drowdown/Dropdown.css'
+import '../../Posts/PostCard/PostCard.css'
 
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { MdPhotoCamera } from 'react-icons/md'
 import { TbPhoto } from 'react-icons/tb'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
@@ -11,8 +13,8 @@ import {
 	setProfileAvatar,
 	setProfileBanner,
 } from '../../../redux/slices/profileSlice'
-import { uploadImage } from '../../../utils/uploadImage'
 import Button from '../../Button/Button'
+import Dropdown from '../../Drowdown/Dropdown'
 import Modal from '../../Modal/Modal'
 import ProfileAdditionalInfo from '../ProfileAdditionalInfo/ProfileAdditionalInfo'
 import ProfileSettings from '../ProfileSettings/ProfileSettings'
@@ -21,19 +23,42 @@ import Styles from './ProfileInfo.module.css'
 const ProfileInfo = () => {
 	const [settingsActive, setSettingsActive] = useState(false)
 	const [userInfoActive, setUserInfoActive] = useState(false)
+	const [avatarIsDefault, setAvatarIsDefault] = useState(true)
+	const [bannerIsDefault, setBannerIsDefault] = useState(true)
+
 	const [uploadedImage, setUploadedImage] = useState(null)
 	const dispatch = useDispatch()
 	const profile = useSelector(selectProfile, shallowEqual)
 	const bannerRef = useRef(null)
 	const avatarRef = useRef(null)
 
-	const handleBannerChange = useCallback(() => {
-		uploadImage(bannerRef, ...[,], setProfileBanner, dispatch)
-	}, [bannerRef, dispatch])
+	const resetProfileImage = async type => {
+		try {
+			const response = await fetch(
+				'http://localhost:3000/api/profileImageReset',
+				{
+					method: 'POST',
+					body: JSON.stringify(type),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			)
 
-	const handleAvatarChange = useCallback(() => {
-		uploadImage(avatarRef, ...[,], setProfileAvatar, dispatch)
-	}, [avatarRef, dispatch])
+			if (response.ok) {
+				const result = await response.json()
+				console.log(result)
+
+				type.imagePurpose === 'avatar'
+					? dispatch(setProfileAvatar(result.imageUrl)) &&
+					  setAvatarIsDefault(true)
+					: dispatch(setProfileBanner(result.imageUrl)) &&
+					  setBannerIsDefault(true)
+			} else {
+				setInfo({ infoCategory: 'error', infoMessage: 'ERROR' })
+			}
+		} catch (error) {}
+	}
 
 	const uploadFile = async (e, imagePurpose) => {
 		// e.preventDefault()
@@ -41,18 +66,25 @@ const ProfileInfo = () => {
 		data.append('profileImage', e.target.files[0])
 		data.append('imagePurpose', imagePurpose)
 		try {
-			const response = await fetch('http://localhost:3000/api/profileImageUpload', {
-				method: 'POST',
-				body: data,
-			})
+			const response = await fetch(
+				'http://localhost:3000/api/profileImageUpload',
+				{
+					method: 'POST',
+					body: data,
+				}
+			)
 			const result = await response.json()
 			if (response.ok) {
 				imagePurpose === 'banner'
-					? dispatch(setProfileBanner(result.filePath))
-					: dispatch(setProfileAvatar(result.filePath))
+					? dispatch(setProfileBanner(result.filePath)) &&
+					  setBannerIsDefault(false)
+					: dispatch(setProfileAvatar(result.filePath)) &&
+					  setAvatarIsDefault(false)
 				setUploadedImage(result.filePath)
 			} else {
-				dispatch(setInfo({ infoCategory: 'error', infoMessage: result.message }))
+				dispatch(
+					setInfo({ infoCategory: 'error', infoMessage: result.message })
+				)
 			}
 		} catch (error) {
 			console.log('ERROR catch')
@@ -68,12 +100,35 @@ const ProfileInfo = () => {
 						<img src={profile.bannerUrl} alt='background' id='profile-pic' />
 
 						<div className={Styles['change-background-overlay']}>
-							<label htmlFor='input-background'>
-								<TbPhoto
-									className={Styles['change-background-ico']}
-									title='Change background'
-								/>
-							</label>
+							<Dropdown>
+								<li
+									className={`${Styles['banner-menu-item']} post-editing-list__list-item`}
+								>
+									<label htmlFor='input-background'>
+										<TbPhoto
+											className={Styles['change-background-ico']}
+											title='Change background'
+										/>
+										Change the banner
+									</label>
+								</li>
+
+								{!bannerIsDefault && (
+									<li
+										className={`${Styles['banner-menu-item']} post-editing-list__list-item`}
+										onClick={() =>
+											resetProfileImage({ imagePurpose: 'banner' })
+										}
+									>
+										<LuTrash
+											className={Styles['change-background-ico']}
+											title='Change background'
+										/>
+										Remove the banner
+									</li>
+								)}
+							</Dropdown>
+
 							<form
 								action='/api/banner'
 								method='POST'
@@ -95,7 +150,12 @@ const ProfileInfo = () => {
 				<div className={Styles['avatar-wrapper']}>
 					<div className={Styles.avatar}>
 						<img src={profile.avatarUrl} alt='logo' />
-						<div className={Styles['change-avatar-overlay']}>
+
+						<div
+							className={`${Styles['change-avatar-overlay']} ${
+								!avatarIsDefault && Styles['grid']
+							}`}
+						>
 							<label htmlFor='input-avatar'>
 								<MdPhotoCamera
 									className={Styles['change-avatar-ico']}
@@ -116,6 +176,18 @@ const ProfileInfo = () => {
 										ref={avatarRef}
 									/>
 								</form>
+							</label>
+							<label>
+								{!avatarIsDefault && (
+									<LuTrash
+										// className={Styles['change-background-ico']}
+										className={Styles['change-avatar-ico']}
+										title='Remove the avatar'
+										onClick={() =>
+											resetProfileImage({ imagePurpose: 'avatar' })
+										}
+									/>
+								)}
 							</label>
 							{/* <input
 								type='file'

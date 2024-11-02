@@ -1,6 +1,6 @@
 .post-wrapper {
-	width: 80%;
 	text-align: center;
+	width: 80%;
 	display: flex;
 	justify-content: center;
 	background-color: var(--background-secondary-color);
@@ -11,14 +11,14 @@
 .post-container {
 	display: flex;
 	flex-direction: column;
-	width: 90%;
 	align-items: center;
+	width: 90%;
 }
 
 .post-author__info {
 	display: flex;
 	align-items: center;
-	justify-content: start;
+	justify-content: space-between;
 	width: 100%;
 	gap: 15px;
 	padding-bottom: 30px;
@@ -26,15 +26,18 @@
 }
 
 .post-author-date__container {
+	display: flex;
+	gap: 25px;
 	text-align: start;
+	gap: 25px;
 }
 .post-author-date__container p {
 	line-height: 0.6;
 }
 
 .post-author__info img {
-	width: 70px;
-	height: 70px;
+	width: 4em;
+	height: 4em;
 	border-radius: 50%;
 	object-fit: cover;
 	image-rendering: auto;
@@ -79,39 +82,12 @@
 	cursor: pointer;
 }
 
-.post-editing-list {
-	display: flex;
-	flex-direction: column;
-	right: 0;
-	position: absolute;
-	justify-content: center;
-	list-style: none;
-	background-color: rgb(51, 51, 51);
-	padding: 10px;
-	border-radius: 15px;
-	font-weight:600;
-	margin-top: 150px;
-	z-index: 3;
-	font-size: 14px;
-	gap: 5px;
-	transition: 0.3s all ease;
-	opacity: 0;
-}
-
 .post-editing-list__list-item {
 	padding-block: 5px;
 	padding-inline: 10px;
 	border-radius: 5px;
 	transition: 0.2s all ease-in;
 	cursor: pointer;
-}
-
-.post-editing-list__list-item:hover {
-	background-color: rgba(105, 105, 105, 0.315);
-}
-
-.post-editing-list--change {
-	opacity: 1;
 }
 
 .post-editing-list__favourite-item {
@@ -123,9 +99,46 @@
 
 .post-editing-list__favourite-item svg {
 	font-size: 20px;
-	transition: .2s all ease;
+	transition: 0.2s all ease;
 }
 
 .favourite-item__added {
-color: rgb(253, 178, 65);
+	color: rgb(253, 178, 65);
+}
+
+/* .post-editing-list {
+	display: flex;
+	flex-direction: column;
+	right: 0;
+	position: absolute;
+	justify-content: center;
+	list-style: none;
+	background-color: rgb(51, 51, 51);
+	padding: 10px;
+	border-radius: 15px;
+	font-weight: 600;
+	margin-top: 150px;
+	z-index: 3;
+	font-size: 14px;
+	gap: 5px;
+	transition: 0.3s all ease;
+	opacity: 0;
+}
+
+.post-editing-list__list-item:hover {
+	background-color: rgba(105, 105, 105, 0.315);
+}
+
+.post-editing-list--change {
+	opacity: 1;
+} */
+
+@media (max-width: 1350px) {
+	.post-wrapper {
+		width: 100%;
+	}
+
+	.post-container {
+		width: 100%;
+	}
 }

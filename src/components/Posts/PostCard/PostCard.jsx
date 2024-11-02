@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-import { FiEdit } from 'react-icons/fi'
-import { HiOutlineDotsVertical } from 'react-icons/hi'
-import { MdBookmarkAdd, MdBookmarkAdded } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -10,7 +7,9 @@ import {
 	setFavouritePost,
 } from '../../../redux/slices/profileSlice'
 
+import { MdBookmarkAdd, MdBookmarkAdded } from 'react-icons/md'
 import { selectPosts } from '../../../redux/slices/postsSlice'
+import Dropdown from '../../Drowdown/Dropdown'
 import './PostCard.css'
 
 const PostCard = React.memo(function PostCard({ children, postDate, postId }) {
@@ -68,50 +67,37 @@ const PostCard = React.memo(function PostCard({ children, postDate, postId }) {
 	return (
 		<div className='post-wrapper'>
 			<div className='post-container'>
-				<div className='post-author__info' onMouseLeave={handleMouseLeave}>
-					<img src={profile.avatarUrl} alt='profile avatar' />
+				<div className='post-author__info'>
 					<div className='post-author-date__container'>
-						<p>
-							{profile.name && profile.surname
-								? `${profile.name} ${profile.surname}`
-								: profile.nickname}
-						</p>
-						<p className='post-date'>Created: {postDate}</p>
+						<img src={profile.avatarUrl} alt='profile avatar' />
+						<div>
+							<p>
+								{profile.name && profile.surname
+									? `${profile.name} ${profile.surname}`
+									: profile.nickname}
+							</p>
+							<p className='post-date'>Created: {postDate}</p>
+						</div>
 					</div>
 
-					<span onMouseOver={handleMouseOver} style={{ marginLeft: 'auto' }}>
-						<HiOutlineDotsVertical className='more-info__ico' />
-					</span>
-					{dropdownIsOpen && (
-						<ul
-							className={`post-editing-list ${
-								dropDownChanging && 'post-editing-list--change'
-							}`}
+					<Dropdown>
+						<li
+							className='post-editing-list__list-item'
+							onClick={handleAddFavPost}
 						>
-							<li
-								className='post-editing-list__list-item'
-								onClick={handleAddFavPost}
-							>
-								{postIsFav ? (
-									<div className='post-editing-list__favourite-item'>
-										<MdBookmarkAdded className='favourite-item__added' />
-										Remove from favourite
-									</div>
-								) : (
-									<div className='post-editing-list__favourite-item'>
-										<MdBookmarkAdd className='favourite-item__add' />
-										Add to favourite
-									</div>
-								)}
-							</li>
-							<li className='post-editing-list__list-item'>
+							{postIsFav ? (
 								<div className='post-editing-list__favourite-item'>
-									<FiEdit />
-									Edit
+									<MdBookmarkAdded className='favourite-item__added' />
+									Remove from favourite
 								</div>
-							</li>
-						</ul>
-					)}
+							) : (
+								<div className='post-editing-list__favourite-item'>
+									<MdBookmarkAdd className='favourite-item__add' />
+									Add to favourite
+								</div>
+							)}
+						</li>
+					</Dropdown>
 				</div>
 				<div className='post-data'>{children}</div>
 			</div>

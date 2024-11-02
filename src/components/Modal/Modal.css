@@ -43,3 +43,10 @@
 .modal__content.active {
 	transform: scale(1);
 }
+
+@media (max-width: 1350px) {
+	.modal__content {
+		min-width: 65%;
+		max-width: 90%;
+	}
+}

@@ -51,7 +51,7 @@
 	margin: 0px;
 	padding: 0px;
 	height: 100%;
-	height: clamp(200px, 700px, 600px);
+	height: clamp(200px, 600px, 700px);
 	width: 100%;
 	user-select: none;
 	-webkit-user-drag: none;
@@ -192,4 +192,10 @@ div:hover ~ .carousel-indicators__wrapper {
 	padding: 0.5em 0;
 	border: none;
 	outline: none;
+}
+
+@media (max-width: 1350px) {
+	.post-image__main-image img {
+		height: 500px;
+	}
 }
