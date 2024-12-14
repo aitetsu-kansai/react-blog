@@ -9,6 +9,7 @@ import Dropdown from '../../Drowdown/Dropdown'
 import Modal from '../../Modal/Modal'
 import PostCreator from '../PostCreator/PostCreator'
 import Styles from './PostBar.module.css'
+import { setInfo } from '../../../redux/slices/infoSlice'
 
 function PostBar() {
 	const profile = useSelector(selectProfile)
@@ -64,16 +65,14 @@ function PostBar() {
 					className={Styles['postbar-ico']}
 					title='Add new post'
 					onClick={() => {
-						setCreatorActive(true)
-						//!!! important
-						// profile.name && profile.email
-						// 	? setCreatorActive(true)
-						// 	: dispatch(
-						// 			setInfo({
-						// 				infoCategory: 'warning',
-						// 				infoMessage: 'You must fill the full information about you',
-						// 			})
-						// 	  )
+						profile.name && profile.email
+							? setCreatorActive(true)
+							: dispatch(
+									setInfo({
+										infoCategory: 'warning',
+										infoMessage: 'You must fill the full information about you',
+									})
+							  )
 					}}
 				/>
 
