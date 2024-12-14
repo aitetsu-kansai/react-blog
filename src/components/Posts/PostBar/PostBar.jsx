@@ -60,17 +60,6 @@ function PostBar() {
 					className={Styles['postbar-ico']}
 					title='Clear all posts'
 				/>
-				<div className=''>
-					<span>Are you sure that you want to clear all posts?</span>
-					<Dropdown type='onClick'>
-						<form>
-							<label htmlFor=''>
-								<Button>No</Button>
-								<Button>Yes</Button>
-							</label>
-						</form>
-					</Dropdown>
-				</div>
 				<FaCircleArrowUp
 					className={Styles['postbar-ico']}
 					title='Add new post'
