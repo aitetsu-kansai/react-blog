@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import './Dropdown.css'
 
-function Dropdown({ children,`` }) {
+function Dropdown({ children, }) {
 	const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
 	const [dropDownChanging, setDropdownChanging] = useState(false)
 	const handleMouseOver = () => {
