@@ -92,6 +92,8 @@ const ProfileInfo = () => {
 		}
 	}
 
+
+
 	return (
 		<div className={Styles['main-wrapper']}>
 			<div className={Styles['header-wrapper']}>

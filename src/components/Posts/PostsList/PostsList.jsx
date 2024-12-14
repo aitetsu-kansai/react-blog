@@ -31,55 +31,6 @@ function PostsList() {
 			: null
 	}
 
-	// const getPosts = async () => {
-	// 	try {
-	// 		const response = await fetch('http://localhost:3000/api/post', {
-	// 			method: 'GET',
-	// 			headers: {
-	// 				'Content-Type': 'application/json',
-	// 			},
-	// 		})
-
-	// 		if (response.ok) {
-	// 			const data = await response.json()
-	// 			setLoadedPosts(data)
-	// 		} else {
-	// 			dispatch(
-	// 				setInfo({
-	// 					infoCategory: 'error',
-	// 					infoMessage: 'Failed to fetch profile posts',
-	// 				})
-	// 			)
-	// 		}
-	// 	} catch (error) {
-	// 		dispatch(
-	// 			setInfo({
-	// 				infoCategory: 'error',
-	// 				infoMessage: error,
-	// 			})
-	// 		)
-	// 	}
-	// }
-
-	// useEffect(() => {
-	// 	fetch('http://localhost:3000/api/post', {
-	// 		method: 'GET',
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 		},
-	// 	})
-	// 		.then(response => response.json())
-	// 		.then(data => setLoadedPosts(data))
-	// 		.catch(error =>
-	// 			dispatch(
-	// 				setInfo({
-	// 					infoCategory: 'error',
-	// 					infoMessage: error,
-	// 				})
-	// 			)
-	// 		)
-	// }, [])
-
 	return (
 		<div className={Styles['posts-list__wrapper']}>
 			<div className={Styles['posts-list__container']}>
