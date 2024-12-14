@@ -4,8 +4,6 @@ import { GrPowerReset } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
 import { showAllPosts, showFavPosts } from '../../../redux/slices/postsSlice'
 import { selectProfile } from '../../../redux/slices/profileSlice'
-import Button from '../../Button/Button'
-import Dropdown from '../../Drowdown/Dropdown'
 import Modal from '../../Modal/Modal'
 import PostCreator from '../PostCreator/PostCreator'
 import Styles from './PostBar.module.css'
@@ -61,6 +59,7 @@ function PostBar() {
 					className={Styles['postbar-ico']}
 					title='Clear all posts'
 				/>
+
 				<FaCircleArrowUp
 					className={Styles['postbar-ico']}
 					title='Add new post'
