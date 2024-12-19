@@ -55,19 +55,6 @@ Before you begin, make sure you have the following installed on your system:
 - **yarn run dev**: Starts the development server for the front-end.
 - **yarn start** (in `/api`): Starts the API server.
 
-### Build
-
-To build the project for production, run:
-
-```bash
-yarn build
-```
-
-This will create an optimized production build in the `/dist` folder.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
